@@ -34,8 +34,14 @@ export const SortableTable: FC<IProps> = ({ rows }) => {
         const valueB =
           property === Property.KEY ? Object.keys(b)[0] : Object.values(b)[0];
 
-        if (valueA < valueB) return dir ? -1 : 1;
-        if (valueA > valueB) return dir ? 1 : -1;
+        if (typeof valueA === "string" && typeof valueB === "number") {
+          return 1;
+        } else if (typeof valueA === "number" && typeof valueB === "string") {
+          return -1;
+        } else {
+          if (valueA < valueB) return dir ? -1 : 1;
+          if (valueA > valueB) return dir ? 1 : -1;
+        }
 
         return 0;
       })
