@@ -1,38 +1,48 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./SortableTable.module.css";
+import { IUser } from "../../App";
 
 interface IProps {
-  rows: Array<Record<string, string | number>>;
+  rows: IUser[];
 }
 
 enum Property {
-  KEY = "key",
+  ID = "id",
+  NAME = "name",
   VALUE = "value",
+  FACT = "fact",
 }
 
 export const SortableTable: FC<IProps> = ({ rows }) => {
   const [table, setTable] = useState(rows);
 
-  const [dirKey, setDirKey] = useState(true);
+  const [dirId, setDirId] = useState(true);
+  const [dirName, setDirName] = useState(true);
   const [dirValue, setDirValue] = useState(true);
+  const [dirFact, setDirFact] = useState(true);
 
-  const onClickKey = () => {
-    sort(Property.KEY, dirKey);
-    setDirKey(!dirKey);
-  };
-
-  const onClickValue = () => {
-    sort(Property.VALUE, dirValue);
-    setDirValue(!dirValue);
-  };
+  useEffect(() => setTable(rows), [rows]);
 
   const sort = (property: Property, dir: boolean) => {
     setTable(
       table.slice().sort((a, b) => {
         const valueA =
-          property === Property.KEY ? Object.keys(a)[0] : Object.values(a)[0];
+          property === Property.ID || property === Property.FACT
+            ? property === Property.ID
+              ? a.id
+              : a.text
+            : property === Property.VALUE
+            ? Object.values(a.keyValue)[0]
+            : Object.keys(a.keyValue)[0];
+
         const valueB =
-          property === Property.KEY ? Object.keys(b)[0] : Object.values(b)[0];
+          property === Property.ID || property === Property.FACT
+            ? property === Property.ID
+              ? b.id
+              : b.text
+            : property === Property.VALUE
+            ? Object.values(b.keyValue)[0]
+            : Object.keys(b.keyValue)[0];
 
         if (typeof valueA === "string" && typeof valueB === "number") {
           return 1;
@@ -48,24 +58,58 @@ export const SortableTable: FC<IProps> = ({ rows }) => {
     );
   };
 
+  const handleClick = (
+    property: Property,
+    dir: boolean,
+    setDir: (dir: boolean) => void
+  ) => {
+    sort(property, dir);
+    setDir(!dir);
+  };
+
   return (
     <table border={1} className={styles.root}>
       <tbody>
         <tr>
           <th>
-            key
-            <button onClick={onClickKey}>↕</button>
+            Id
+            <button onClick={() => handleClick(Property.ID, dirId, setDirId)}>
+              ↕
+            </button>
           </th>
           <th>
-            value
-            <button onClick={onClickValue}>↕</button>
+            Name
+            <button
+              onClick={() => handleClick(Property.NAME, dirName, setDirName)}
+            >
+              ↕
+            </button>
+          </th>
+          <th>
+            Value
+            <button
+              onClick={() => handleClick(Property.VALUE, dirValue, setDirValue)}
+            >
+              ↕
+            </button>
+          </th>
+
+          <th>
+            Fact
+            <button
+              onClick={() => handleClick(Property.FACT, dirFact, setDirFact)}
+            >
+              ↕
+            </button>
           </th>
         </tr>
-        {table.map((r, index) => {
+        {table?.map((r, index) => {
           return (
             <tr key={index}>
-              <td>{Object.keys(r)}</td>
-              <td>{Object.values(r)}</td>
+              <td>{Object.values(r.id)}</td>
+              <td>{Object.keys(r.keyValue)}</td>
+              <td>{Object.values(r.keyValue)}</td>
+              <td>{Object.values(r.text)}</td>
             </tr>
           );
         })}
