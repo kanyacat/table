@@ -50,8 +50,8 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
   };
 
   return (
-    <table border={1} className={styles.root}>
-      <tbody>
+    <table className={styles.root}>
+      <thead>
         <tr>
           {header.map((h) => {
             return (
@@ -62,6 +62,8 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
             );
           })}
         </tr>
+      </thead>
+      <tbody>
         {table?.map((r, index) => {
           return (
             <tr key={index}>
