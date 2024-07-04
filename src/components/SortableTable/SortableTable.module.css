@@ -6,6 +6,10 @@ th {
   background-color: #f9f9f9;
 }
 
+.grab {
+  cursor: grab;
+}
+
 th,
 td {
   padding: 5px 15px;
