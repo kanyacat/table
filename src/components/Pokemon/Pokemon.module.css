@@ -1,0 +1,53 @@
+.root {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 50px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+}
+
+.type:not(:last-child) {
+  margin-right: 5px;
+}
+
+.name {
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.stats {
+  position: relative;
+  margin: 0 20px;
+  padding: 20px 50px;
+  background: rgba(255, 255, 255, 0.5);
+  text-transform: capitalize;
+
+  border-radius: 15px;
+  font-weight: 500;
+}
+
+.base_stats {
+  margin-bottom: 10px;
+}
+
+.showdown {
+  position: absolute;
+
+  bottom: -20px;
+  right: -30px;
+}
+
+.sprite {
+  margin-bottom: 10px;
+}
+
+.sprite,
+.mini_sprites {
+  background-color: rgba(255, 255, 255, 0.5);
+
+  border-radius: 360px;
+}

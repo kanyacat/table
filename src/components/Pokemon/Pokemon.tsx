@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { resultGetPokemon } from "../../api/api";
 import { IPokemonData } from "../../types/pokemonTypes";
+import { pokemonType } from "../pokemonType/pokemonType";
 
 export const Pokemon = () => {
   const { id } = useParams();
@@ -11,8 +12,6 @@ export const Pokemon = () => {
 
   useEffect(() => {
     async function fetchData(id: string) {
-      console.log("я фетчу", id);
-
       if (id) {
         const pokemonData = await resultGetPokemon(id);
         setData(pokemonData);
@@ -27,33 +26,55 @@ export const Pokemon = () => {
   console.log(data);
 
   return (
-    <div className={styles.root}>
-      <h1>{data?.name}</h1>
-      <div>
-        <h2> Sprites:</h2>
-        <div className={styles.base_sprite}>
-          <h3>Base:</h3>
-          <img src={data?.sprites.front_default} alt="front_default" />
-          <img src={data?.sprites.back_default} alt="back_default" />
+    <main className={styles.root}>
+      <div className={data?.types[0].type.name}>
+        <h1 className={styles.name}>{data?.name}</h1>
+        <div className={styles.top}>
+          <section className={styles.stats}>
+            <div>
+              {data?.types.map((t) => {
+                if (t.type.name in pokemonType) {
+                  return (
+                    <span className={styles.type}>
+                      {pokemonType[t.type.name]}
+                    </span>
+                  );
+                }
+              })}
+            </div>
+            <h2 className={styles.base_stats}>Base stats:</h2>
+            <ul>
+              {data?.stats.map((st) => {
+                return (
+                  <li key={st.stat.url}>
+                    <p>
+                      {st.stat.name}: <span>{st.base_stat}</span>
+                    </p>
+                  </li>
+                );
+              })}
+              <img
+                className={styles.showdown}
+                src={data?.sprites.other?.showdown.front_default}
+                alt="showdown front"
+              />
+            </ul>
+          </section>
+          <div className={styles.sprites}>
+            <img
+              className={styles.sprite}
+              src={data?.sprites.other?.["official-artwork"].front_default}
+              alt=""
+            />
+            <div className={styles.mini_sprites}>
+              <img src={data?.sprites.front_default} alt="front_default" />
+              <img src={data?.sprites.back_default} alt="back_default" />
+              <img src={data?.sprites.front_shiny} alt="front_shiny" />
+              <img src={data?.sprites.back_shiny} alt="back_shiny" />
+            </div>
+          </div>
         </div>
-        <div className={styles.shiny_sprite}>
-          <h3>Shiny:</h3>
-          <img src={data?.sprites.front_shiny} alt="front_shiny" />
-          <img src={data?.sprites.back_shiny} alt="back_shiny" />
-        </div>
-        <h3>Base stats:</h3>
-        <ul>
-          {data?.stats.map((st) => {
-            return (
-              <li key={st.stat.url}>
-                <p>
-                  {st.stat.name}: <span>{st.base_stat}</span>
-                </p>
-              </li>
-            );
-          })}
-        </ul>
       </div>
-    </div>
+    </main>
   );
 };

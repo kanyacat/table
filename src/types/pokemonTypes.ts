@@ -159,11 +159,11 @@ export interface GenerationVii {
 
 export interface DreamWorld {
   front_default: string;
-  front_female: null;
+  front_female: string;
 }
 
 export interface GenerationViii {
-  icons: DreamWorld;
+  icons?: DreamWorld;
 }
 
 export interface Stat {

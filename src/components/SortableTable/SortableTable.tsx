@@ -1,25 +1,26 @@
 import { FC, useEffect, useState } from "react";
 import styles from "./SortableTable.module.css";
 //@ts-ignore
-import { ReactComponent as DndIcon } from "../../assets/dnd.svg";
-import { IHeader, IPokemon } from "../../types/types";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import DndIcon from "../../assets/dnd.svg?react";
+import { IHeader } from "../../types/types";
+import { useNavigate } from "react-router-dom";
+import { IPokemonData } from "../../types/pokemonTypes";
 
 export interface IProps {
-  rows: IPokemon[];
+  rows: IPokemonData[];
   header: IHeader[];
 }
 
 export const SortableTable: FC<IProps> = ({ rows, header }) => {
-  const [table, setTable] = useState<IPokemon[]>(rows);
+  const [table, setTable] = useState<IPokemonData[]>(rows);
 
-  const [currentRow, setCurrentRow] = useState<IPokemon>();
+  const [currentRow, setCurrentRow] = useState<IPokemonData>();
 
   const navigate = useNavigate();
 
   useEffect(() => setTable(rows), [rows]);
 
-  const dragStartHandler = (row: IPokemon) => {
+  const dragStartHandler = (row: IPokemonData) => {
     setCurrentRow(row);
   };
 
@@ -33,7 +34,7 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
     e.currentTarget.classList.add("dragged");
   };
 
-  const dropHandler = (e: React.DragEvent, row: IPokemon) => {
+  const dropHandler = (e: React.DragEvent, row: IPokemonData) => {
     e.preventDefault();
 
     if (currentRow !== undefined) {
@@ -62,6 +63,7 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
                 {h.name}
                 {h.sort && (
                   <button
+                    className={styles.btn}
                     onClick={() => {
                       if (h.sort) {
                         setTable(h.sort);

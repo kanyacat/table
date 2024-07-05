@@ -1,5 +1,6 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Roboto, arial, sans-serif;
+
   line-height: 1.5;
   font-weight: 400;
 
@@ -7,6 +8,22 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* background: -webkit-linear-gradient(90deg, #ee7717, #ffffff, #df410c);
+  background: linear-gradient(90deg, #ee7717, #ffffff, #df410c); */
+
+  background: -webkit-linear-gradient(
+    90deg,
+    #db7676,
+    #ffffff,
+    #db7676
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    90deg,
+    #db7676,
+    #ffffff,
+    #db7676
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 body {

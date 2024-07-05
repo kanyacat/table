@@ -3,10 +3,11 @@ import { SortableTable } from "./components/SortableTable/SortableTable";
 import { useEffect, useState } from "react";
 import { resultPokemonsApi } from "./api/api";
 import { sort } from "./helpers/sort";
-import { IPokemon, Property } from "./types/types";
+import { Property } from "./types/types";
+import { IPokemonData } from "./types/pokemonTypes";
 
 function App() {
-  const [arr, setArr] = useState<IPokemon[]>([]);
+  const [arr, setArr] = useState<IPokemonData[]>([]);
 
   const [dirName, setDirName] = useState<boolean>(true);
   const [dirId, setDirId] = useState<boolean>(true);

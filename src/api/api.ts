@@ -31,6 +31,7 @@ const pokemonsApi = async () => {
         id,
         weight,
         height,
+        //@ts-ignore, позже поправлю
         types,
         name,
       });

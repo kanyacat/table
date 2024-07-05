@@ -1,6 +1,11 @@
-import { IPokemon, Property } from "../types/types";
+import { IPokemonData } from "../types/pokemonTypes";
+import { Property } from "../types/types";
 
-export const sort = (table: IPokemon[], property: Property, dir: boolean) => {
+export const sort = (
+  table: IPokemonData[],
+  property: Property,
+  dir: boolean
+) => {
   return table.slice().sort((a, b) => {
     let valueA = "";
     let valueB = "";
@@ -17,7 +22,9 @@ export const sort = (table: IPokemon[], property: Property, dir: boolean) => {
         break;
 
       case Property.TYPES:
+        //@ts-ignore, позже поправлю
         valueA = a.types;
+        //@ts-ignore, позже поправлю
         valueB = b.types;
         break;
 

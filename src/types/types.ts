@@ -9,13 +9,25 @@ export enum Property {
   WEIGHT = "weight",
 }
 
-export interface IPokemon {
-  name: string;
-  id: string;
-  weight: string;
-  height: string;
-  types: string[];
-}
+// export type pokemonTypes =
+//   | "fire"
+//   | "normal"
+//   | "fighting"
+//   | "flying"
+//   | "ground"
+//   | "poison"
+//   | "rock"
+//   | "bug"
+//   | "ghost"
+//   | "steel"
+//   | "water"
+//   | "grass"
+//   | "electric"
+//   | "phisic"
+//   | "ice"
+//   | "dragon"
+//   | "dark"
+//   | "fairy";
 
 export interface IResPokemon {
   body: IPokemonData;
@@ -23,11 +35,11 @@ export interface IResPokemon {
 
 export interface IResPokemonsName {
   body: {
-    results: IPokemon[];
+    results: IPokemonData[];
   };
 }
 
 export interface IHeader {
   name: string;
-  sort?: SetStateAction<IPokemon[]>;
+  sort?: SetStateAction<IPokemonData[]>;
 }
