@@ -1,63 +1,57 @@
-import superagent from "superagent";
 import "./App.css";
 import { SortableTable } from "./components/SortableTable/SortableTable";
 import { useEffect, useState } from "react";
-
-const array: Record<string, string | number>[] = [
-  { rabbit: 7 },
-  { cat: 11 },
-  { dog: 19 },
-  { kitten: "meow" },
-  { kvakvakvakva: "kvakvakvakva" },
-];
-
-export interface IUser {
-  id: string;
-  text: string;
-  keyValue: Record<string, string | number>;
-}
-
-interface IRes {
-  body: [
-    {
-      _id: string;
-      text: string;
-    }
-  ];
-}
+import { resultFactsApi } from "./api/api";
+import { sort } from "./helpers/sort";
+import { IUser, Property } from "./types/types";
 
 function App() {
   const [arr, setArr] = useState<IUser[]>([]);
 
+  const [dirName, setDirName] = useState<boolean>(true);
+  const [dirValue, setDirValue] = useState<boolean>(true);
+  const [dirFact, setDirFact] = useState<boolean>(true);
+
+  const handleClick = (
+    property: Property,
+    dir: boolean,
+    setDir: (dir: boolean) => void
+  ) => {
+    setDir(!dir);
+
+    return sort(arr, property, dir);
+  };
+
+  const headerConfig = [
+    {
+      name: "Move",
+    },
+    {
+      name: "Name",
+      sort: () => handleClick(Property.NAME, dirName, setDirName),
+    },
+    {
+      name: "Value",
+      sort: () => handleClick(Property.VALUE, dirValue, setDirValue),
+    },
+    {
+      name: "Cat fact",
+      sort: () => handleClick(Property.FACT, dirFact, setDirFact),
+    },
+  ];
+
   useEffect(() => {
-    (async () => {
-      try {
-        const res: IRes = await superagent.get(
-          "https://cat-fact.herokuapp.com/facts"
-        );
+    async function fetchData() {
+      const array = await resultFactsApi();
+      setArr(array);
+    }
 
-        const newArray: IUser[] = [];
-
-        array.map(
-          (a: Record<string, string | number>, index: number): number => {
-            return newArray.push({
-              id: res.body[index]._id,
-              text: res.body[index].text,
-              keyValue: a,
-            });
-          }
-        );
-
-        setArr(newArray);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
+    fetchData();
   }, []);
 
   return (
     <div className="root">
-      <SortableTable rows={arr} />
+      <SortableTable rows={arr} header={headerConfig} />
     </div>
   );
 }
