@@ -1,23 +1,33 @@
 import { SetStateAction } from "react";
+import { IPokemonData } from "./pokemonTypes";
 
 export enum Property {
+  ID = "id",
   NAME = "name",
-  VALUE = "value",
-  FACT = "fact",
+  TYPES = "types",
+  HEIGHT = "height",
+  WEIGHT = "weight",
 }
 
-export interface IUser {
-  text: string;
-  keyValue: Record<string, string | number>;
+export interface IPokemon {
+  name: string;
+  id: string;
+  weight: string;
+  height: string;
+  types: string[];
 }
 
-export interface IRes {
+export interface IResPokemon {
+  body: IPokemonData;
+}
+
+export interface IResPokemonsName {
   body: {
-    data: string[];
+    results: IPokemon[];
   };
 }
 
 export interface IHeader {
   name: string;
-  sort?: () => SetStateAction<IUser[]>;
+  sort?: SetStateAction<IPokemon[]>;
 }

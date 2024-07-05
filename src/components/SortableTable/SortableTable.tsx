@@ -2,21 +2,24 @@ import { FC, useEffect, useState } from "react";
 import styles from "./SortableTable.module.css";
 //@ts-ignore
 import { ReactComponent as DndIcon } from "../../assets/dnd.svg";
-import { IHeader, IUser } from "../../types/types";
+import { IHeader, IPokemon } from "../../types/types";
+import { Link, redirect, useNavigate } from "react-router-dom";
 
 export interface IProps {
-  rows: IUser[];
+  rows: IPokemon[];
   header: IHeader[];
 }
 
 export const SortableTable: FC<IProps> = ({ rows, header }) => {
-  const [table, setTable] = useState<IUser[]>(rows);
+  const [table, setTable] = useState<IPokemon[]>(rows);
 
-  const [currentRow, setCurrentRow] = useState<IUser>();
+  const [currentRow, setCurrentRow] = useState<IPokemon>();
+
+  const navigate = useNavigate();
 
   useEffect(() => setTable(rows), [rows]);
 
-  const dragStartHandler = (e: React.DragEvent, row: IUser) => {
+  const dragStartHandler = (row: IPokemon) => {
     setCurrentRow(row);
   };
 
@@ -30,7 +33,7 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
     e.currentTarget.classList.add("dragged");
   };
 
-  const dropHandler = (e: React.DragEvent, row: IUser) => {
+  const dropHandler = (e: React.DragEvent, row: IPokemon) => {
     e.preventDefault();
 
     if (currentRow !== undefined) {
@@ -57,7 +60,17 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
             return (
               <th key={h.name} className={styles.header}>
                 {h.name}
-                {h.sort && <button onClick={() => setTable(h.sort)}>↕</button>}
+                {h.sort && (
+                  <button
+                    onClick={() => {
+                      if (h.sort) {
+                        setTable(h.sort);
+                      }
+                    }}
+                  >
+                    ↕
+                  </button>
+                )}
               </th>
             );
           })}
@@ -66,11 +79,11 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
       <tbody>
         {table?.map((r, index) => {
           return (
-            <tr key={index}>
+            <tr key={index} onClick={() => navigate(`/table/pokemon/${r.id}`)}>
               <td
                 className={styles.grab}
                 draggable={true}
-                onDragStart={(e) => dragStartHandler(e, r)}
+                onDragStart={() => dragStartHandler(r)}
                 onDragLeave={dragEndHandler}
                 onDragEnd={dragEndHandler}
                 onDragOver={(e) => dragOverHandler(e)}
@@ -78,9 +91,11 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
               >
                 <DndIcon />
               </td>
-              <td>{Object.keys(r.keyValue)}</td>
-              <td>{Object.values(r.keyValue)}</td>
-              <td>{Object.values(r.text)}</td>
+              <td>{r.id}</td>
+              <td>{r.name}</td>
+              <td>{r.types.join(", ")}</td>
+              <td>{r.weight}</td>
+              <td>{r.height}</td>
             </tr>
           );
         })}

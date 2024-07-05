@@ -26,6 +26,11 @@ td {
   padding: 5px 15px;
 }
 
+tr:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
 .grab {
   cursor: grab;
 }

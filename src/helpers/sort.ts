@@ -1,29 +1,42 @@
-import { IUser, Property } from "../types/types";
+import { IPokemon, Property } from "../types/types";
 
-export const sort = (table: IUser[], property: Property, dir: boolean) => {
+export const sort = (table: IPokemon[], property: Property, dir: boolean) => {
   return table.slice().sort((a, b) => {
-    const valueA =
-      property === Property.FACT
-        ? a.text
-        : property === Property.VALUE
-        ? Object.values(a.keyValue)[0]
-        : Object.keys(a.keyValue)[0];
+    let valueA = "";
+    let valueB = "";
 
-    const valueB =
-      property === Property.FACT
-        ? b.text
-        : property === Property.VALUE
-        ? Object.values(b.keyValue)[0]
-        : Object.keys(b.keyValue)[0];
+    switch (property) {
+      case Property.ID:
+        valueA = a.id;
+        valueB = b.id;
+        break;
 
-    if (typeof valueA === "string" && typeof valueB === "number") {
-      return 1;
-    } else if (typeof valueA === "number" && typeof valueB === "string") {
-      return -1;
-    } else {
-      if (valueA < valueB) return dir ? -1 : 1;
-      if (valueA > valueB) return dir ? 1 : -1;
+      case Property.NAME:
+        valueA = a.name;
+        valueB = b.name;
+        break;
+
+      case Property.TYPES:
+        valueA = a.types;
+        valueB = b.types;
+        break;
+
+      case Property.WEIGHT:
+        valueA = a.weight;
+        valueB = b.weight;
+        break;
+
+      case Property.HEIGHT:
+        valueA = a.height;
+        valueB = b.height;
+        break;
+
+      default:
+        break;
     }
+
+    if (valueA < valueB) return dir ? -1 : 1;
+    if (valueA > valueB) return dir ? 1 : -1;
 
     return 0;
   });

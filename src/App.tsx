@@ -1,16 +1,18 @@
 import "./App.css";
 import { SortableTable } from "./components/SortableTable/SortableTable";
 import { useEffect, useState } from "react";
-import { resultFactsApi } from "./api/api";
+import { resultPokemonsApi } from "./api/api";
 import { sort } from "./helpers/sort";
-import { IUser, Property } from "./types/types";
+import { IPokemon, Property } from "./types/types";
 
 function App() {
-  const [arr, setArr] = useState<IUser[]>([]);
+  const [arr, setArr] = useState<IPokemon[]>([]);
 
   const [dirName, setDirName] = useState<boolean>(true);
-  const [dirValue, setDirValue] = useState<boolean>(true);
-  const [dirFact, setDirFact] = useState<boolean>(true);
+  const [dirId, setDirId] = useState<boolean>(true);
+  const [dirTypes, setDirTypes] = useState<boolean>(true);
+  const [dirWeight, setDirWeight] = useState<boolean>(true);
+  const [dirHeight, setDirHeight] = useState<boolean>(true);
 
   const handleClick = (
     property: Property,
@@ -27,22 +29,30 @@ function App() {
       name: "Move",
     },
     {
+      name: "Id",
+      sort: () => handleClick(Property.ID, dirId, setDirId),
+    },
+    {
       name: "Name",
       sort: () => handleClick(Property.NAME, dirName, setDirName),
     },
     {
-      name: "Value",
-      sort: () => handleClick(Property.VALUE, dirValue, setDirValue),
+      name: "Types",
+      sort: () => handleClick(Property.TYPES, dirTypes, setDirTypes),
     },
     {
-      name: "Cat fact",
-      sort: () => handleClick(Property.FACT, dirFact, setDirFact),
+      name: "Weight",
+      sort: () => handleClick(Property.WEIGHT, dirWeight, setDirWeight),
+    },
+    {
+      name: "Height",
+      sort: () => handleClick(Property.HEIGHT, dirHeight, setDirHeight),
     },
   ];
 
   useEffect(() => {
     async function fetchData() {
-      const array = await resultFactsApi();
+      const array = await resultPokemonsApi();
       setArr(array);
     }
 
