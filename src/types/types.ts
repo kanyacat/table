@@ -9,26 +9,6 @@ export enum Property {
   WEIGHT = "weight",
 }
 
-// export type pokemonTypes =
-//   | "fire"
-//   | "normal"
-//   | "fighting"
-//   | "flying"
-//   | "ground"
-//   | "poison"
-//   | "rock"
-//   | "bug"
-//   | "ghost"
-//   | "steel"
-//   | "water"
-//   | "grass"
-//   | "electric"
-//   | "phisic"
-//   | "ice"
-//   | "dragon"
-//   | "dark"
-//   | "fairy";
-
 export interface IResPokemon {
   body: IPokemonData;
 }

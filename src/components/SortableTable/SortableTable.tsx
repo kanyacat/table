@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import styles from "./SortableTable.module.css";
 //@ts-ignore
-import DndIcon from "../../assets/dnd.svg?react";
+import DndIcon from "../../assets/dnd2.svg?react";
 import { IHeader } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { IPokemonData } from "../../types/pokemonTypes";
+import { PokemonType } from "../PokemonType/PokemonType";
 
 export interface IProps {
   rows: IPokemonData[];
@@ -13,7 +14,6 @@ export interface IProps {
 
 export const SortableTable: FC<IProps> = ({ rows, header }) => {
   const [table, setTable] = useState<IPokemonData[]>(rows);
-
   const [currentRow, setCurrentRow] = useState<IPokemonData>();
 
   const navigate = useNavigate();
@@ -94,8 +94,12 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
                 <DndIcon />
               </td>
               <td>{r.id}</td>
-              <td>{r.name}</td>
-              <td>{r.types.join(", ")}</td>
+              <td className={styles.name}>{r.name}</td>
+              <td>
+                {r.types.map((t) => {
+                  return <PokemonType key={t.type.url} type={t.type.name} />;
+                })}
+              </td>
               <td>{r.weight}</td>
               <td>{r.height}</td>
             </tr>

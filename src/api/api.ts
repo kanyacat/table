@@ -7,12 +7,10 @@ let pokemon: IPokemonData[] = [];
 
 const pokemons = "https://pokeapi.co/api/v2/pokemon";
 
-const limit = 15;
-
-const pokemonsApi = async () => {
+const pokemonsApi = async (offset: number, limit: number) => {
   try {
     const res: IResPokemonsName = await superagent.get(
-      `${pokemons}?limit=${limit}`
+      `${pokemons}?offset=${offset}&limit=${limit}`
     );
 
     newArray = [];
@@ -22,19 +20,9 @@ const pokemonsApi = async () => {
         `${pokemons}/${res.body.results[i].name}`
       );
 
-      const { id, name, weight, height } = resp.body;
-      const types: string[] = [];
+      const data = resp.body;
 
-      resp.body.types.map((t) => types.push(t.type.name));
-
-      newArray.push({
-        id,
-        weight,
-        height,
-        //@ts-ignore, позже поправлю
-        types,
-        name,
-      });
+      newArray.push(data);
     }
     return newArray;
   } catch (err) {
@@ -42,8 +30,8 @@ const pokemonsApi = async () => {
   }
 };
 
-export const resultPokemonsApi = async () => {
-  await pokemonsApi();
+export const resultPokemonsApi = async (offset: number, limit: number) => {
+  await pokemonsApi(offset, limit);
   return newArray;
 };
 

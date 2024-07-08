@@ -22,9 +22,7 @@ export const sort = (
         break;
 
       case Property.TYPES:
-        //@ts-ignore, позже поправлю
         valueA = a.types;
-        //@ts-ignore, позже поправлю
         valueB = b.types;
         break;
 

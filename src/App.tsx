@@ -1,13 +1,23 @@
 import "./App.css";
 import { SortableTable } from "./components/SortableTable/SortableTable";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { resultPokemonsApi } from "./api/api";
 import { sort } from "./helpers/sort";
 import { Property } from "./types/types";
 import { IPokemonData } from "./types/pokemonTypes";
+import Pagination from "./components/Pagination/Pagination";
+
+const ROWS_PER_PAGE = 10;
+const TOTAL_COUNT = 130;
+const LIMIT = 10;
+
+const getTotalPageCount = (rowCount: number): number =>
+  Math.ceil(rowCount / ROWS_PER_PAGE);
 
 function App() {
   const [arr, setArr] = useState<IPokemonData[]>([]);
+  const [page, setPage] = useState(1);
+  const [offset, setOffset] = useState(0);
 
   const [dirName, setDirName] = useState<boolean>(true);
   const [dirId, setDirId] = useState<boolean>(true);
@@ -53,17 +63,51 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const array = await resultPokemonsApi();
+      const array = await resultPokemonsApi(offset, LIMIT);
       setArr(array);
     }
 
     fetchData();
-  }, []);
+  }, [page]);
+
+  const handleNextPageClick = useCallback(() => {
+    const current = page;
+    const next = current + 1;
+    const total = arr ? getTotalPageCount(TOTAL_COUNT) : current;
+
+    setOffset(offset + ROWS_PER_PAGE);
+
+    setPage(next <= total ? next : current);
+  }, [page, arr]);
+
+  const handlePrevPageClick = useCallback(() => {
+    const current = page;
+    const prev = current - 1;
+
+    setOffset(offset - ROWS_PER_PAGE);
+
+    setPage(prev > 0 ? prev : current);
+  }, [page]);
+
+  if (!arr) {
+    return <div>loading...</div>;
+  }
 
   return (
-    <div className="root">
+    <main className="root">
       <SortableTable rows={arr} header={headerConfig} />
-    </div>
+      {arr && (
+        <Pagination
+          onNextPageClick={handleNextPageClick}
+          onPrevPageClick={handlePrevPageClick}
+          disable={{
+            left: page === 1,
+            right: page === getTotalPageCount(TOTAL_COUNT),
+          }}
+          nav={{ current: page, total: getTotalPageCount(TOTAL_COUNT) }}
+        />
+      )}
+    </main>
   );
 }
 

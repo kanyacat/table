@@ -19,6 +19,8 @@ td {
 
 th {
   font-weight: 500;
+  background-color: rgb(253, 235, 235);
+  cursor: auto;
 }
 
 th,
@@ -27,7 +29,7 @@ td {
 }
 
 tr:hover {
-  background-color: #e0e0e0;
+  background-color: #e1aaaa;
   cursor: pointer;
 }
 
@@ -37,4 +39,12 @@ tr:hover {
 
 .btn {
   margin-left: 10px;
+}
+
+.type {
+  margin-right: 10px;
+}
+
+.name {
+  text-transform: capitalize;
 }
