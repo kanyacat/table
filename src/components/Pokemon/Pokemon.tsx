@@ -1,11 +1,12 @@
 import styles from "./Pokemon.module.css";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { resultGetPokemon } from "../../api/api";
+import { getPokemon } from "../../api/api";
 import { IPokemonData } from "../../types/pokemonTypes";
 import { PokemonType } from "../PokemonType/PokemonType";
 //@ts-ignore
 import ReturnIcon from "../../assets/return.svg?react";
+import { Loader } from "../Loader/Loader";
 
 export const Pokemon = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ export const Pokemon = () => {
   useEffect(() => {
     async function fetchData(id: string) {
       if (id) {
-        const pokemonData = await resultGetPokemon(id);
+        const pokemonData = await getPokemon(id);
         setData(pokemonData);
       }
     }
@@ -28,7 +29,11 @@ export const Pokemon = () => {
   }, [id]);
 
   if (!data) {
-    return <div>loading...</div>;
+    return (
+      <>
+        <Loader />
+      </>
+    );
   }
 
   return (

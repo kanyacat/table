@@ -7,8 +7,8 @@ export const sort = (
   dir: boolean
 ) => {
   return table.slice().sort((a, b) => {
-    let valueA = "";
-    let valueB = "";
+    let valueA = {};
+    let valueB = {};
 
     switch (property) {
       case Property.ID:

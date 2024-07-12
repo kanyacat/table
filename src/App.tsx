@@ -1,11 +1,14 @@
 import "./App.css";
+import "./PokemonTypes.css";
 import { SortableTable } from "./components/SortableTable/SortableTable";
 import { useCallback, useEffect, useState } from "react";
 import { resultPokemonsApi } from "./api/api";
 import { sort } from "./helpers/sort";
-import { Property } from "./types/types";
+import { IColumn, Property } from "./types/types";
 import { IPokemonData } from "./types/pokemonTypes";
-import Pagination from "./components/Pagination/Pagination";
+import { Pagination } from "./components/Pagination/Pagination";
+import { Loader } from "./components/Loader/Loader";
+import { PokemonType } from "./components/PokemonType/PokemonType";
 
 const ROWS_PER_PAGE = 10;
 const TOTAL_COUNT = 130;
@@ -15,7 +18,10 @@ const getTotalPageCount = (rowCount: number): number =>
   Math.ceil(rowCount / ROWS_PER_PAGE);
 
 function App() {
-  const [arr, setArr] = useState<IPokemonData[]>([]);
+  const [tableRows, setTableRows] = useState<IPokemonData[]>([]);
+
+  const [loading, setLoading] = useState(false);
+
   const [page, setPage] = useState(1);
   const [offset, setOffset] = useState(0);
 
@@ -24,16 +30,6 @@ function App() {
   const [dirTypes, setDirTypes] = useState<boolean>(true);
   const [dirWeight, setDirWeight] = useState<boolean>(true);
   const [dirHeight, setDirHeight] = useState<boolean>(true);
-
-  const handleClick = (
-    property: Property,
-    dir: boolean,
-    setDir: (dir: boolean) => void
-  ) => {
-    setDir(!dir);
-
-    return sort(arr, property, dir);
-  };
 
   const headerConfig = [
     {
@@ -61,24 +57,66 @@ function App() {
     },
   ];
 
+  const columns: IColumn[] = [
+    {
+      field: "id",
+    },
+    {
+      field: "name",
+    },
+    {
+      field: "types",
+    },
+    {
+      field: "weight",
+    },
+    {
+      field: "height",
+    },
+  ];
+
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       const array = await resultPokemonsApi(offset, LIMIT);
-      setArr(array);
+
+      setTableRows(
+        array.map((pokemon) => ({
+          id: pokemon.id,
+          name: pokemon.name,
+          types: pokemon.types.map((t) => (
+            <PokemonType key={t.type.url} type={t.type.name} />
+          )),
+          weight: pokemon.weight,
+          height: pokemon.height,
+        }))
+      );
+
+      setLoading(false);
     }
 
     fetchData();
-  }, [page]);
+  }, [offset, page]);
+
+  const handleClick = (
+    property: Property,
+    dir: boolean,
+    setDir: (dir: boolean) => void
+  ) => {
+    setDir(!dir);
+
+    return sort(tableRows, property, dir);
+  };
 
   const handleNextPageClick = useCallback(() => {
     const current = page;
     const next = current + 1;
-    const total = arr ? getTotalPageCount(TOTAL_COUNT) : current;
+    const total = tableRows ? getTotalPageCount(TOTAL_COUNT) : current;
 
     setOffset(offset + ROWS_PER_PAGE);
 
     setPage(next <= total ? next : current);
-  }, [page, arr]);
+  }, [page, tableRows, offset]);
 
   const handlePrevPageClick = useCallback(() => {
     const current = page;
@@ -87,25 +125,31 @@ function App() {
     setOffset(offset - ROWS_PER_PAGE);
 
     setPage(prev > 0 ? prev : current);
-  }, [page]);
-
-  if (!arr) {
-    return <div>loading...</div>;
-  }
+  }, [offset, page]);
 
   return (
     <main className="root">
-      <SortableTable rows={arr} header={headerConfig} />
-      {arr && (
-        <Pagination
-          onNextPageClick={handleNextPageClick}
-          onPrevPageClick={handlePrevPageClick}
-          disable={{
-            left: page === 1,
-            right: page === getTotalPageCount(TOTAL_COUNT),
-          }}
-          nav={{ current: page, total: getTotalPageCount(TOTAL_COUNT) }}
-        />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <SortableTable
+            rows={tableRows}
+            columns={columns}
+            header={headerConfig}
+          />
+          {tableRows && (
+            <Pagination
+              onNextPageClick={handleNextPageClick}
+              onPrevPageClick={handlePrevPageClick}
+              hasPage={{
+                hasPreviousPage: page === 1,
+                hasNextPage: page === getTotalPageCount(TOTAL_COUNT),
+              }}
+              nav={{ current: page, total: getTotalPageCount(TOTAL_COUNT) }}
+            />
+          )}
+        </>
       )}
     </main>
   );
