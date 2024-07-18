@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SetStateAction } from "react";
+import { ReactNode, SetStateAction } from "react";
 import { IPokemonData } from "./pokemonTypes";
 
 export enum Property {
@@ -50,4 +50,24 @@ export interface ISortableTableProps {
   rows: any[];
   columns: IColumn[];
   header: IHeader[];
+}
+
+export interface ICustomPokemon {
+  name: string;
+  id: string;
+  type: IOptions;
+  description: string;
+  picture: string;
+}
+
+export interface IOptions {
+  name: string;
+  icon: ReactNode;
+}
+
+export interface IError {
+  type: string;
+  id: string;
+  name: string;
+  file: string;
 }

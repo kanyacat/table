@@ -1,0 +1,35 @@
+.root {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 37px 56px;
+
+  display: flex;
+  gap: 20px;
+  font-family: "Inter Semi", sans-serif;
+}
+
+.pokemons {
+  font-weight: 700;
+  font-size: 22px;
+
+  display: grid;
+  align-items: center;
+  text-align: center;
+
+  grid-template-columns: repeat(3, 1fr);
+  gap: 35px;
+}
+
+.not__pokemons {
+  color: var(--main-color);
+  grid-column: 2 / 3;
+}
+
+.btn {
+  color: var(--light-color);
+  background-color: var(--main-color);
+  border-radius: 26px;
+
+  font-weight: 600;
+  font-size: 22px;
+}
