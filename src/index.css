@@ -1,5 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
+
   line-height: 1.5;
   font-weight: 400;
 
@@ -7,6 +10,19 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background: -webkit-linear-gradient(
+    90deg,
+    #db7676,
+    #ffffff,
+    #db7676
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    90deg,
+    #db7676,
+    #ffffff,
+    #db7676
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 body {
@@ -35,11 +51,9 @@ button {
   background-color: white;
 }
 
-button:hover {
-  border-color: #e0e0e0;
-}
-
+button:hover,
+button:active,
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 1px solid #db7676;
 }

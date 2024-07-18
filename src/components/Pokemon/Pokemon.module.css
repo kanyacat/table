@@ -1,0 +1,94 @@
+.root {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 50px;
+}
+
+main {
+  display: block;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+}
+
+.type:not(:last-child) {
+  margin-right: 5px;
+}
+
+.name {
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  font-weight: 700;
+}
+
+.stats {
+  position: relative;
+  margin: 0 20px;
+  padding: 20px 50px;
+  background: rgba(255, 255, 255, 0.5);
+  text-transform: capitalize;
+
+  border-radius: 15px;
+  font-weight: 500;
+}
+
+.base__stats {
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.types {
+  margin-bottom: 15px;
+}
+
+.stat__title {
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat {
+  font-weight: 300;
+  color: black;
+  margin-left: 20px;
+}
+
+.showdown {
+  position: absolute;
+
+  bottom: -20px;
+  right: -30px;
+}
+
+.sprite {
+  margin-bottom: 10px;
+}
+
+.sprite,
+.mini_sprites {
+  background-color: rgba(255, 255, 255, 0.5);
+
+  border-radius: 360px;
+}
+
+.btn {
+  margin: 0 auto;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.btn:hover,
+.btn:active,
+.btn:focus,
+.btn:focus-visible {
+  outline: 2px solid #fff;
+}
+
+.arrow {
+  margin-right: 10px;
+}

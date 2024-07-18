@@ -19,6 +19,8 @@ td {
 
 th {
   font-weight: 500;
+  background-color: rgb(253, 235, 235);
+  cursor: auto;
 }
 
 th,
@@ -26,6 +28,23 @@ td {
   padding: 5px 15px;
 }
 
+tr:hover {
+  background-color: #e1aaaa;
+  cursor: pointer;
+}
+
 .grab {
   cursor: grab;
+}
+
+.btn {
+  margin-left: 10px;
+}
+
+.type {
+  margin-right: 10px;
+}
+
+.name {
+  text-transform: capitalize;
 }

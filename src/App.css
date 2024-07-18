@@ -1,3 +1,8 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -6,5 +11,22 @@
 }
 
 .dragged {
-  background-color: #e0e0e0;
+  background-color: #db7676;
+}
+
+li,
+ul,
+ol {
+  list-style-type: none;
+}
+
+strong {
+  margin-right: 10px;
+  padding: 3px 15px;
+  border-radius: 180px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-transform: lowercase;
 }

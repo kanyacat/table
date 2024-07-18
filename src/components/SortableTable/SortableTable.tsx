@@ -1,22 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useEffect, useState } from "react";
 import styles from "./SortableTable.module.css";
 //@ts-ignore
-import { ReactComponent as DndIcon } from "../../assets/dnd.svg";
-import { IHeader, IUser } from "../../types/types";
+import DndIcon from "../../assets/dnd2.svg?react";
+import { IColumn, ISortableTableProps } from "../../types/types";
+import { useNavigate } from "react-router-dom";
+import { IPokemonData } from "../../types/pokemonTypes";
 
-export interface IProps {
-  rows: IUser[];
-  header: IHeader[];
-}
+export const SortableTable: FC<ISortableTableProps> = ({
+  rows,
+  header,
+  columns,
+}) => {
+  const [table, setTable] = useState<IColumn[]>(rows);
+  const [currentRow, setCurrentRow] = useState<IPokemonData>();
 
-export const SortableTable: FC<IProps> = ({ rows, header }) => {
-  const [table, setTable] = useState<IUser[]>(rows);
-
-  const [currentRow, setCurrentRow] = useState<IUser>();
+  const navigate = useNavigate();
 
   useEffect(() => setTable(rows), [rows]);
 
-  const dragStartHandler = (e: React.DragEvent, row: IUser) => {
+  const dragStartHandler = (row: IPokemonData) => {
     setCurrentRow(row);
   };
 
@@ -30,12 +33,12 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
     e.currentTarget.classList.add("dragged");
   };
 
-  const dropHandler = (e: React.DragEvent, row: IUser) => {
+  const droppableRow = (e: React.DragEvent, row: IPokemonData) => {
     e.preventDefault();
 
     if (currentRow !== undefined) {
       setTable(
-        table.map((r) => {
+        table.map((r: any) => {
           if (r === currentRow) {
             return row;
           } else if (r === row) {
@@ -53,37 +56,46 @@ export const SortableTable: FC<IProps> = ({ rows, header }) => {
     <table className={styles.root}>
       <thead>
         <tr>
-          {header.map((h) => {
+          {header.map((header) => {
             return (
-              <th key={h.name} className={styles.header}>
-                {h.name}
-                {h.sort && <button onClick={() => setTable(h.sort)}>↕</button>}
+              <th key={header.name} className={styles.header}>
+                {header.name}
+                {header.sort && (
+                  <button
+                    className={styles.btn}
+                    onClick={() => {
+                      if (header.sort) {
+                        setTable(header.sort);
+                      }
+                    }}
+                  >
+                    ↕
+                  </button>
+                )}
               </th>
             );
           })}
         </tr>
       </thead>
       <tbody>
-        {table?.map((r, index) => {
-          return (
-            <tr key={index}>
-              <td
-                className={styles.grab}
-                draggable={true}
-                onDragStart={(e) => dragStartHandler(e, r)}
-                onDragLeave={dragEndHandler}
-                onDragEnd={dragEndHandler}
-                onDragOver={(e) => dragOverHandler(e)}
-                onDrop={(e) => dropHandler(e, r)}
-              >
-                <DndIcon />
-              </td>
-              <td>{Object.keys(r.keyValue)}</td>
-              <td>{Object.values(r.keyValue)}</td>
-              <td>{Object.values(r.text)}</td>
-            </tr>
-          );
-        })}
+        {table.map((row: any, index: number) => (
+          <tr key={index} onClick={() => navigate(`/table/pokemon/${row.id}`)}>
+            <td
+              className={styles.grab}
+              draggable={true}
+              onDragStart={() => dragStartHandler(row)}
+              onDragLeave={dragEndHandler}
+              onDragEnd={dragEndHandler}
+              onDragOver={(e) => dragOverHandler(e)}
+              onDrop={(e) => droppableRow(e, row)}
+            >
+              <DndIcon />
+            </td>
+            {columns.map((column) => (
+              <td key={row[column.field]}>{row[column.field]}</td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   );

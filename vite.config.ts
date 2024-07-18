@@ -4,17 +4,6 @@ import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    svgr({
-      svgrOptions: {
-        exportType: "named",
-        ref: true,
-        svgo: false,
-        titleProp: true,
-      },
-      include: "**/*.svg",
-    }),
-  ],
+  plugins: [react(), svgr()],
   base: "/table/",
 });

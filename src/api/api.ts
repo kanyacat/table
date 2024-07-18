@@ -1,36 +1,39 @@
 import superagent from "superagent";
-import { IUser, IRes } from "../types/types";
+import { IResPokemonsName } from "../types/types";
+import { IPokemonData } from "../types/pokemonTypes";
 
-const array: Record<string, string | number>[] = [
-  { rabbit: 7 },
-  { cat: 11 },
-  { dog: 19 },
-  { kitten: "meow" },
-  { kvakvakvakva: "kvakvakvakva" },
-];
+const pokemons = "https://pokeapi.co/api/v2/pokemon";
 
-const newArray: IUser[] = [];
-
-const meowFacts = "https://meowfacts.herokuapp.com/";
-
-const factsApi = async () => {
+const pokemonsApi = async (
+  pokemonsArray: IPokemonData[],
+  offset: number,
+  limit: number
+) => {
   try {
-    const res: IRes = await superagent.get(`${meowFacts}?count=5`);
+    const res: IResPokemonsName = await superagent.get(
+      `${pokemons}?offset=${offset}&limit=${limit}`
+    );
 
-    array.map((a: Record<string, string | number>, index: number) => {
-      return newArray.push({
-        text: res.body.data[index],
-        keyValue: a,
-      });
-    });
+    for (let i = 0; i < limit; i++) {
+      await superagent
+        .get(`${pokemons}/${res.body.results[i].name}`)
+        .then((resp) => pokemonsArray.push(resp.body));
+    }
 
-    return newArray;
+    return pokemonsArray;
   } catch (err) {
     console.error(err);
   }
 };
 
-export const resultFactsApi = async () => {
-  await factsApi();
-  return newArray;
+export const resultPokemonsApi = async (offset: number, limit: number) => {
+  const pokemonsArray: IPokemonData[] = [];
+
+  await pokemonsApi(pokemonsArray, offset, limit);
+  return pokemonsArray;
+};
+
+export const getPokemon = async (id: string) => {
+  const pok = await superagent.get(`${pokemons}/${id}`);
+  return pok.body;
 };

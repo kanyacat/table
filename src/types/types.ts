@@ -1,23 +1,53 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SetStateAction } from "react";
+import { IPokemonData } from "./pokemonTypes";
 
 export enum Property {
+  ID = "id",
   NAME = "name",
-  VALUE = "value",
-  FACT = "fact",
+  TYPES = "types",
+  HEIGHT = "height",
+  WEIGHT = "weight",
 }
 
-export interface IUser {
-  text: string;
-  keyValue: Record<string, string | number>;
+export interface IResPokemon {
+  body: IPokemonData;
 }
 
-export interface IRes {
+export interface IResPokemonsName {
   body: {
-    data: string[];
+    results: IPokemonData[];
   };
 }
 
 export interface IHeader {
   name: string;
-  sort?: () => SetStateAction<IUser[]>;
+  sort?: SetStateAction<any[]>;
+}
+
+export interface IPaginationProps {
+  onNextPageClick: () => void;
+  onPrevPageClick: () => void;
+  hasPage: {
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+  };
+  nav?: {
+    current: number;
+    total: number;
+  };
+  className?: string;
+}
+
+// export type ITableRows<T> = Partial<T>[];
+
+export interface IColumn {
+  field: string;
+  // value: any;
+}
+
+export interface ISortableTableProps {
+  rows: any[];
+  columns: IColumn[];
+  header: IHeader[];
 }
