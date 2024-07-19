@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import { IPokemonData } from "../../../types/pokemonTypes";
-import "../../../PokemonTypes.css";
-import { Property } from "../../../types/types";
-import { resultPokemonsApi } from "../../../api/api";
-import { sort } from "../../../helpers/sort";
-import { Loader } from "../../Loader/Loader";
-import { SortableTable } from "../../SortableTable/SortableTable";
-import { Pagination } from "../../Pagination/Pagination";
-import { PokemonType } from "../../PokemonType/PokemonType";
-import { columns } from "../../../configs/tableColumnConfig";
-import styles from "./TableTab.module.css";
+import { IPokemonData } from "../../types/pokemonTypes";
+import "../../PokemonTypes.css";
+import { Property } from "../../types/types";
+import { resultPokemonsApi } from "../../api/api";
+import { sort } from "../../helpers/sort";
+import { Loader } from "../../components/Loader/Loader";
+import { SortableTable } from "../../components/SortableTable/SortableTable";
+import { Pagination } from "../../components/Pagination/Pagination";
+import { PokemonType } from "../../components/PokemonType/PokemonType";
+import { columns } from "../../configs/tableColumnConfig";
+import styles from "./Table.module.css";
 
 const ROWS_PER_PAGE = 10;
 const TOTAL_COUNT = 130;
@@ -17,7 +17,7 @@ const LIMIT = 10;
 
 const getTotalPageCount = (rowCount: number): number =>
   Math.ceil(rowCount / ROWS_PER_PAGE);
-export const TableTab = () => {
+export const Table = () => {
   const [tableRows, setTableRows] = useState<IPokemonData[]>([]);
 
   const [loading, setLoading] = useState(false);

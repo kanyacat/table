@@ -56,6 +56,12 @@
   transition: opacity 0.3s ease;
 
   border-radius: 0 0 8px 8px;
+
+  height: 300px;
+  overflow: auto;
+
+  scrollbar-color: var(--main-color) #f3f3f3;
+  scrollbar-width: thin;
 }
 
 .type {

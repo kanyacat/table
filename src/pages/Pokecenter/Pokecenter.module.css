@@ -25,11 +25,16 @@
   grid-column: 2 / 3;
 }
 
-.btn {
+.link {
   color: var(--light-color);
   background-color: var(--main-color);
   border-radius: 26px;
 
   font-weight: 600;
   font-size: 22px;
+
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
 }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { CustomSelect } from "../CustomSelect/CustomSelect";
-import styles from "./Editor.module.css";
+import styles from "./CreatePokemon.module.css";
 import placeholder from "../../assets/placeholder.png";
 import {
   onValidate,
@@ -15,15 +14,11 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
 import "../../index.css";
 import { createPortal } from "react-dom";
-import { Loader } from "../Loader/Loader";
+import { Link } from "react-router-dom";
+import { Loader } from "../../components/Loader/Loader";
+import { CustomSelect } from "../../components/CustomSelect/CustomSelect";
 
-interface IProps {
-  closeEditor: () => void;
-}
-
-export const Editor = (props: IProps) => {
-  const { closeEditor } = props;
-
+export const CreatePokemon = () => {
   //данные формы
   const [type, setType] = useState<IOptions>();
   const [id, setId] = useState("");
@@ -233,9 +228,9 @@ export const Editor = (props: IProps) => {
       )}
 
       <div className={styles.btns}>
-        <button className={styles.close} onClick={closeEditor}>
+        <Link to="/table/pokecenter" className={clsx(styles.close, "button")}>
           Back
-        </button>
+        </Link>
         <button className={styles.add} onClick={onSubmit}>
           Add
         </button>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./CustomSelect.css";
 import clsx from "clsx";
 import { IOptions } from "../../types/types";
@@ -17,6 +17,16 @@ export const CustomSelect = (props: IProps) => {
 
   const [showOptions, setShowOptions] = useState(false);
   const [focusedOptionIndex, setFocusedOptionIndex] = useState<number>(-1);
+
+  const optionsRef = useRef(null);
+
+  const closeOpenOptions = (e) => {
+    if (showOptions && !optionsRef.current?.contains(e.target)) {
+      setShowOptions(false);
+    }
+  };
+
+  document.addEventListener("mousedown", closeOpenOptions);
 
   const handleSelect = (option: IOptions) => {
     setType(option);
@@ -70,7 +80,10 @@ export const CustomSelect = (props: IProps) => {
               "Select type"
             )}
           </div>
-          <ul className={`options ${showOptions ? "show" : ""}`}>
+          <ul
+            ref={optionsRef}
+            className={`options ${showOptions ? "show" : ""}`}
+          >
             {options.map((option, index) => (
               <li
                 tabIndex={0}
