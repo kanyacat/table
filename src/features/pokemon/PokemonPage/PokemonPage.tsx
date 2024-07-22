@@ -1,19 +1,21 @@
-import styles from "./Pokemon.module.css";
+import styles from "./PokemonPage.module.css";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getPokemon } from "../../api/api";
-import { IPokemonData } from "../../types/pokemonTypes";
-import { PokemonType } from "../PokemonType/PokemonType";
 //@ts-ignore
-import ReturnIcon from "../../assets/return.svg?react";
-import { Loader } from "../Loader/Loader";
+import ReturnIcon from "../../../assets/return.svg?react";
+import { IPokemonData } from "../../../types/pokemonTypes";
+import { getPokemon } from "../../../api/api";
+import { Loader } from "../../../components/Loader/Loader";
+import { PokemonType } from "../../../components/PokemonType/PokemonType";
 
-export const Pokemon = () => {
+export const PokemonPage = () => {
   const { id } = useParams();
 
   const [data, setData] = useState<IPokemonData>();
 
   const navigate = useNavigate();
+
+  console.log(data);
 
   useEffect(() => {
     async function fetchData(id: string) {

@@ -1,12 +1,12 @@
-import styles from "./Pokecenter.module.css";
-import not__pokemon from "../../assets/psydack.png";
-import { Card } from "../../components/Card/Card";
-import { ICustomPokemon } from "../../types/types";
-import { Header } from "../../components/Header/Header";
+import styles from "./PokecenterPage.module.css";
+import not__pokemon from "../../../assets/psydack.png";
+import { Card } from "../../../components/Card/Card";
+import { ICustomPokemon } from "../../../types/types";
+import { Header } from "../../../components/Header/Header";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 
-export const Pokecenter = () => {
+export const PokecenterPage = () => {
   const pokemons = JSON.parse(localStorage.getItem("pokemons") || "[]");
 
   return (
@@ -40,10 +40,7 @@ export const Pokecenter = () => {
             </div>
           )}
         </article>
-        <Link
-          to="/table/pokecenter/create"
-          className={clsx(styles.link, "button")}
-        >
+        <Link to="/table/pokecenter/create" className={clsx(styles.link)}>
           +
         </Link>
       </main>

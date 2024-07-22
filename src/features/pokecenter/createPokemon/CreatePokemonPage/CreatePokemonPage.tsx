@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
-import styles from "./CreatePokemon.module.css";
-import placeholder from "../../assets/placeholder.png";
+import styles from "./CreatePokemonPage.module.css";
+import placeholder from "../../../../assets/placeholder.png";
+import clsx from "clsx";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import "../../../../index.css";
+import { createPortal } from "react-dom";
+import { Link } from "react-router-dom";
+import { IError, IOptions } from "../../../../types/types";
 import {
   onValidate,
   validateFile,
   validateId,
   validateName,
   validateType,
-} from "../../helpers/validate";
-import clsx from "clsx";
-import { IError, IOptions } from "../../types/types";
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css"; // optional
-import "../../index.css";
-import { createPortal } from "react-dom";
-import { Link } from "react-router-dom";
-import { Loader } from "../../components/Loader/Loader";
-import { CustomSelect } from "../../components/CustomSelect/CustomSelect";
+} from "../../../../helpers/validate";
+import { Loader } from "../../../../components/Loader/Loader";
+import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
 
-export const CreatePokemon = () => {
+export const CreatePokemonPage = () => {
   //данные формы
   const [type, setType] = useState<IOptions>();
   const [id, setId] = useState("");
@@ -228,7 +228,7 @@ export const CreatePokemon = () => {
       )}
 
       <div className={styles.btns}>
-        <Link to="/table/pokecenter" className={clsx(styles.close, "button")}>
+        <Link to="/table/pokecenter" className={clsx(styles.close)}>
           Back
         </Link>
         <button className={styles.add} onClick={onSubmit}>

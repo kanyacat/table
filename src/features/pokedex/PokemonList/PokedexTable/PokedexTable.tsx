@@ -1,19 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import { IPokemonData } from "../../types/pokemonTypes";
-import "../../PokemonTypes.css";
-import { Property } from "../../types/types";
-import { resultPokemonsApi } from "../../api/api";
-import { sort } from "../../helpers/sort";
-import { Loader } from "../../components/Loader/Loader";
-import { SortableTable } from "../../components/SortableTable/SortableTable";
-import { Pagination } from "../../components/Pagination/Pagination";
-import { PokemonType } from "../../components/PokemonType/PokemonType";
-import { columns } from "../../configs/tableColumnConfig";
-import styles from "./Table.module.css";
-
-const ROWS_PER_PAGE = 10;
-const TOTAL_COUNT = 130;
-const LIMIT = 10;
+import { IPokemonData, Type } from "../../../../types/pokemonTypes";
+import "../../../../PokemonTypes.css";
+import { Property } from "../../../../types/types";
+import { requestPokemonData } from "../../../../api/api";
+import { sort } from "../../../../helpers/sort";
+import { Loader } from "../../../../components/Loader/Loader";
+import { SortableTable } from "../../../../components/SortableTable/SortableTable";
+import { Pagination } from "../../../../components/Pagination/Pagination";
+import { PokemonType } from "../../../../components/PokemonType/PokemonType";
+import { columns } from "../../../../configs/tableColumnConfig";
+import styles from "./PokedexTable.module.css";
+import { LIMIT, ROWS_PER_PAGE, TOTAL_COUNT } from "../../../../consts";
 
 const getTotalPageCount = (rowCount: number): number =>
   Math.ceil(rowCount / ROWS_PER_PAGE);
@@ -34,22 +31,31 @@ export const Table = () => {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const array = await resultPokemonsApi(offset, LIMIT);
 
-      setTableRows(
-        //@ts-ignore
-        array.map((pokemon) => ({
-          id: pokemon.id,
-          name: pokemon.name,
-          types: pokemon.types.map((t) => (
-            <PokemonType key={t.type.url} type={t.type.name} />
-          )),
-          weight: pokemon.weight,
-          height: pokemon.height,
-        }))
-      );
+      await requestPokemonData(offset, LIMIT)
+        .then((response) => {
+          setTableRows(
+            //@ts-ignore
+            response.map((pokemon) => ({
+              id: pokemon.id,
+              name: pokemon.name,
+              types: pokemon.types.map((type: Type) => (
+                <PokemonType key={type.type.url} type={type.type.name} />
+              )),
+              weight: pokemon.weight,
+              height: pokemon.height,
+            }))
+          );
+        })
 
-      setLoading(false);
+        .catch((error) => {
+          setLoading(false);
+          console.error(error);
+        })
+
+        .finally(() => {
+          setLoading(false);
+        });
     }
 
     fetchData();

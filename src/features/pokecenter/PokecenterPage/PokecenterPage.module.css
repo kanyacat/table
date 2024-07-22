@@ -37,4 +37,13 @@
 
   display: flex;
   align-items: center;
+
+  padding: 0.6em 1.2em;
+}
+
+.link:hover,
+.link:active,
+.link:focus,
+.link:focus-visible {
+  outline: 1px solid var(--main-color);
 }

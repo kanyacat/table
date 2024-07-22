@@ -20,7 +20,8 @@ export const CustomSelect = (props: IProps) => {
 
   const optionsRef = useRef(null);
 
-  const closeOpenOptions = (e) => {
+  const closeOpenOptions = (e: MouseEvent) => {
+    //@ts-ignore
     if (showOptions && !optionsRef.current?.contains(e.target)) {
       setShowOptions(false);
     }
