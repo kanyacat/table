@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactNode, SetStateAction } from "react";
-import { IPokemonData } from "./pokemonTypes";
+import { IPokemonData, Sprites } from "./pokemonTypes";
 
 export enum Property {
   ID = "id",
@@ -70,4 +70,17 @@ export interface IError {
   id: string;
   name: string;
   file: string;
+}
+
+export interface IBody {
+  id: string;
+  name: string;
+  types: JSX.Element[];
+  weight: string;
+  height: string;
+  sprites?: Sprites;
+}
+
+export interface IRes {
+  body: IBody;
 }

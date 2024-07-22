@@ -1,24 +1,24 @@
 export interface IPokemonData {
-  abilities: Ability[];
-  base_experience: number;
-  cries: Cries;
-  forms: Species[];
-  game_indices: GameIndex[];
-  height: string;
-  held_items: any[];
+  abilities?: Ability[];
+  base_experience?: number;
+  cries?: Cries;
+  forms?: Species[];
+  game_indices?: GameIndex[];
+  height?: string;
+  held_items?: any[];
   id: string;
-  is_default: boolean;
-  location_area_encounters: string;
-  moves: Move[];
+  is_default?: boolean;
+  location_area_encounters?: string;
+  moves?: Move[];
   name: string;
-  order: number;
-  past_abilities: any[];
-  past_types: any[];
-  species: Species;
-  sprites: Sprites;
-  stats: Stat[];
-  types: Type[];
-  weight: string;
+  order?: number;
+  past_abilities?: any[];
+  past_types?: any[];
+  species?: Species;
+  sprites?: Sprites;
+  stats?: Stat[];
+  types: Type[] | JSX.Element[];
+  weight?: string;
 }
 
 export interface Ability {

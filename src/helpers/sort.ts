@@ -27,13 +27,13 @@ export const sort = (
         break;
 
       case Property.WEIGHT:
-        valueA = a.weight;
-        valueB = b.weight;
+        valueA = a.weight ? a.weight : "";
+        valueB = b.weight ? b.weight : "";
         break;
 
       case Property.HEIGHT:
-        valueA = a.height;
-        valueB = b.height;
+        valueA = a.height ? a.height : "";
+        valueB = b.height ? b.height : "";
         break;
 
       default:

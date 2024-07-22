@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { IPokemonData, Type } from "../../../../types/pokemonTypes";
+import { IPokemonData } from "../../../../types/pokemonTypes";
 import "../../../../PokemonTypes.css";
-import { Property } from "../../../../types/types";
+import { Property, IRes } from "../../../../types/types";
 import { requestPokemonData } from "../../../../api/api";
 import { sort } from "../../../../helpers/sort";
 import { Loader } from "../../../../components/Loader/Loader";
@@ -33,19 +33,20 @@ export const Table = () => {
       setLoading(true);
 
       await requestPokemonData(offset, LIMIT)
-        .then((response) => {
-          setTableRows(
-            //@ts-ignore
-            response.map((pokemon) => ({
-              id: pokemon.id,
-              name: pokemon.name,
-              types: pokemon.types.map((type: Type) => (
+        .then((response?: IRes[]) => {
+          if (response) {
+            const array = response.map((_, i) => ({
+              id: response[i].body.id,
+              name: response[i].body.name,
+              types: response[i].body.types?.map((type) => (
                 <PokemonType key={type.type.url} type={type.type.name} />
               )),
-              weight: pokemon.weight,
-              height: pokemon.height,
-            }))
-          );
+              weight: response[i].body.weight,
+              height: response[i].body.height,
+            }));
+
+            setTableRows(array);
+          }
         })
 
         .catch((error) => {

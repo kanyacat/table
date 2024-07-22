@@ -1,5 +1,5 @@
 import superagent from "superagent";
-import { IResPokemonsName } from "../types/types";
+import { IRes, IResPokemonsName } from "../types/types";
 import { API_URL } from "../consts";
 
 export const requestPokemonData = async (offset: number, limit: number) => {
@@ -14,16 +14,19 @@ export const requestPokemonData = async (offset: number, limit: number) => {
       promises.push(superagent.get(`${API_URL}/${res.body.results[i].name}`));
     }
 
-    const responses = await Promise.all(promises);
+    const responses: IRes[] = await Promise.all(promises);
 
-    const pokemonsArray = responses.map((resp) => resp.body);
-
-    return pokemonsArray;
+    return new Promise<IRes[]>((resolve) => {
+      resolve(responses);
+    });
   } catch (err) {
     console.error(err);
   }
 };
 export const getPokemon = async (id: string) => {
-  const pok = await superagent.get(`${API_URL}/${id}`);
-  return pok.body;
+  const pok: IRes = await superagent.get(`${API_URL}/${id}`);
+
+  return new Promise<IRes>((resolve) => {
+    resolve(pok);
+  });
 };
