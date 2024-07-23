@@ -55,7 +55,7 @@ export interface ISortableTableProps {
 export interface ICustomPokemon {
   name: string;
   id: string;
-  type: IOptions;
+  types: IOptions[];
   description: string;
   picture: string;
 }
@@ -72,7 +72,7 @@ export interface IError {
   file: string;
 }
 
-export interface IBody {
+export interface IGetPokemonResponseBody {
   id: string;
   name: string;
   types: JSX.Element[];
@@ -81,6 +81,6 @@ export interface IBody {
   sprites?: Sprites;
 }
 
-export interface IRes {
-  body: IBody;
+export interface IGetPokemonResponse {
+  body: IGetPokemonResponseBody;
 }

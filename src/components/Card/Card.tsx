@@ -13,7 +13,7 @@ interface IProps
 }
 
 export const Card = (props: IProps) => {
-  const { name, type, description, picture, className } = props;
+  const { name, types, description, picture, className } = props;
 
   return (
     <div id="card" className={clsx(styles.root, className)}>
@@ -25,10 +25,18 @@ export const Card = (props: IProps) => {
       <p className={styles.name}> {name}</p>
       <div className={styles.description}>
         <div className={styles.type}>
-          <span className={styles.type__icon}>
-            {optionsType[type.name.toLowerCase()]}
-          </span>
-          <p className={clsx(styles.type__name, styles.text)}> {type.name}</p>
+          {types?.map((type) => {
+            return (
+              <div key={type.name}>
+                <span className={styles.type__icon}>
+                  {optionsType[type.name.toLowerCase()]}
+                </span>
+                <p className={clsx(styles.type__name, styles.text)}>
+                  {type.name}
+                </p>
+              </div>
+            );
+          })}
         </div>
         {description && (
           <p className={clsx(styles.text, styles.descr)}>{description}</p>

@@ -7,7 +7,7 @@ import { IPokemonData } from "../../../types/pokemonTypes";
 import { getPokemon } from "../../../api/api";
 import { Loader } from "../../../components/Loader/Loader";
 import { PokemonType } from "../../../components/PokemonType/PokemonType";
-import { IRes } from "../../../types/types";
+import { IGetPokemonResponse } from "../../../types/types";
 
 export const PokemonPage = () => {
   const { id } = useParams();
@@ -18,12 +18,12 @@ export const PokemonPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchData(id: string) {
+    function fetchData(id: string) {
       setLoading(true);
 
       if (id) {
-        await getPokemon(id)
-          .then((response?: IRes) => {
+        getPokemon(id)
+          .then((response?: IGetPokemonResponse) => {
             if (response) {
               setData(response.body);
             }

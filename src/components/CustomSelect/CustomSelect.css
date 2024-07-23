@@ -20,6 +20,22 @@
   font-family: Arial, sans-serif;
 }
 
+.remove__btn,
+.add__btn {
+  position: absolute;
+  top: 20%;
+
+  cursor: pointer;
+}
+
+.remove__btn {
+  left: -27px;
+}
+
+.add__btn {
+  right: -27px;
+}
+
 .box {
   padding: 4px 7px;
   background-color: var(--light-color);
@@ -104,8 +120,8 @@
 .tippy__error {
   position: absolute;
 
-  top: 5px;
-  left: -35px;
+  top: 20%;
+  left: -55px;
 }
 
 .button__error {

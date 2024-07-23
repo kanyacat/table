@@ -1,37 +1,51 @@
 import { ICustomPokemon, IError, IOptions } from "../types/types";
+import { hasDuplicates } from "./hasDuplicates";
 
 export const onValidate = (
-  type: IOptions | undefined,
+  types: IOptions[] | undefined,
   id: string | undefined,
   name: string | undefined,
   isError: IError,
   setIsError: React.Dispatch<React.SetStateAction<IError>>
 ) => {
-  validateType(type, isError, setIsError);
+  validateType(types, isError, setIsError);
   validateId(id, isError, setIsError);
   validateName(name, isError, setIsError);
 };
 
 export const validateType = (
-  type: IOptions | undefined,
+  types: IOptions[] | undefined,
   isError: IError,
   setIsError: React.Dispatch<React.SetStateAction<IError>>
 ) => {
-  if (!type) {
+  console.log(types);
+
+  if (types?.length == 0) {
     setIsError({
       id: isError.id,
       name: isError.name,
       type: (isError.type = "Выберите тип"),
       file: isError.file,
     });
-  } else {
+    return;
+  }
+
+  if (hasDuplicates<IOptions>(types)) {
     setIsError({
       id: isError.id,
       name: isError.name,
-      type: (isError.type = ""),
+      type: (isError.type = "Выбранные типы не должны повторяться"),
       file: isError.file,
     });
+    return;
   }
+
+  setIsError({
+    id: isError.id,
+    name: isError.name,
+    type: (isError.type = ""),
+    file: isError.file,
+  });
 };
 
 export const validateId = (

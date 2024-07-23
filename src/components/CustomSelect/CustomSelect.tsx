@@ -1,22 +1,33 @@
-import { useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import "./CustomSelect.css";
 import clsx from "clsx";
 import { IOptions } from "../../types/types";
 import { options } from "../../configs/optionsTypesConfig";
-import Tippy from "@tippyjs/react";
+//@ts-ignore
+import Minus from "../../assets/minus.svg?react";
+//@ts-ignore
+import Plus from "../../assets/plus.svg?react";
 
 interface IProps {
-  setType: (type: IOptions) => void;
+  setTypes: Dispatch<SetStateAction<IOptions[]>>;
   error: string;
-  type?: IOptions;
+  types?: IOptions[];
   validate: () => void;
+  removeSelect: (e: MouseEvent) => void;
+  addSelect: (e: MouseEvent) => void;
+  selects: {
+    id: number;
+  }[];
 }
 
 export const CustomSelect = (props: IProps) => {
-  const { type, setType, error, validate } = props;
+  const { types, setTypes, error, validate, removeSelect, addSelect, selects } =
+    props;
 
   const [showOptions, setShowOptions] = useState(false);
   const [focusedOptionIndex, setFocusedOptionIndex] = useState<number>(-1);
+
+  const [type, setType] = useState<IOptions>();
 
   const optionsRef = useRef(null);
 
@@ -30,8 +41,43 @@ export const CustomSelect = (props: IProps) => {
   document.addEventListener("mousedown", closeOpenOptions);
 
   const handleSelect = (option: IOptions) => {
-    setType(option);
+    if (type && types) {
+      setType(option);
+
+      setTypes(
+        //удаляет первое встреченное значение
+        types.filter(
+          (item, index) =>
+            item.name !== type?.name || types.indexOf(item) !== index
+        )
+      );
+
+      setTypes((prev) => [...prev, option]);
+    } else {
+      setType(option);
+      setTypes((prev) => [...prev, option]);
+    }
+
     setShowOptions(false);
+  };
+
+  const handleAddSelectClick = (e: MouseEvent) => {
+    e.preventDefault();
+    addSelect(e);
+  };
+
+  const handleRemoveSelectClick = (e: MouseEvent) => {
+    e.preventDefault();
+    if (types) {
+      setTypes(
+        types.filter(
+          (item, index) =>
+            item.name !== type?.name || types.indexOf(item) !== index
+        )
+      );
+    }
+
+    removeSelect(e);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -48,39 +94,49 @@ export const CustomSelect = (props: IProps) => {
 
   return (
     <div className="root">
-      <label className="label" htmlFor="type">
-        Type<span>*</span>
-      </label>
       <div className={"error__container"}>
-        {error && (
-          <Tippy placement="bottom-end" arrow="" theme="error" content={error}>
-            <div className={clsx("tippy__error", "button__error")}>!</div>
-          </Tippy>
-        )}
+        <div className="selector">
+          <Minus
+            className={"remove__btn"}
+            onClick={
+              selects.length > 1
+                ? (e: MouseEvent) => handleRemoveSelectClick(e)
+                : () => {}
+            }
+          />
 
-        <div
-          id="type"
-          className={clsx("select")}
-          tabIndex={0}
-          onKeyDown={handleKeyDown}
-          onBlur={validate}
-        >
           <div
-            className={clsx(
-              `box ${showOptions ? "show" : ""}`,
-              error ? "input__error" : ""
-            )}
-            onClick={() => setShowOptions(!showOptions)}
+            id="type"
+            className={clsx("select")}
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+            onBlur={validate}
           >
-            {type ? (
-              <p className={"type"}>
-                <span className="icon">{type.icon}</span>
-                {type.name}
-              </p>
-            ) : (
-              "Select type"
-            )}
+            <div
+              className={clsx(
+                `box ${showOptions ? "show" : ""}`,
+                error ? "input__error" : ""
+              )}
+              onClick={() => setShowOptions(!showOptions)}
+            >
+              {type ? (
+                <p className={"type"}>
+                  <span className="icon">{type.icon}</span>
+                  {type.name}
+                </p>
+              ) : (
+                "Select type"
+              )}
+            </div>
           </div>
+          <Plus
+            className={"add__btn"}
+            onClick={
+              selects.length < 3
+                ? (e: MouseEvent) => handleAddSelectClick(e)
+                : () => {}
+            }
+          />
           <ul
             ref={optionsRef}
             className={`options ${showOptions ? "show" : ""}`}
@@ -93,6 +149,7 @@ export const CustomSelect = (props: IProps) => {
                   index === focusedOptionIndex ? "focused" : ""
                 }`}
                 onClick={() => handleSelect(option)}
+                onBlur={validate}
               >
                 <p className={"type"}>
                   <span className="icon">{option.icon}</span>

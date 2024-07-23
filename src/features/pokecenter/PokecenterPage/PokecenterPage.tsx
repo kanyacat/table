@@ -22,7 +22,7 @@ export const PokecenterPage = () => {
                   name={pokemon.name}
                   key={pokemon.id}
                   id={pokemon.id}
-                  type={pokemon.type}
+                  types={pokemon.types}
                   description={pokemon.description}
                   picture={pokemon.picture}
                 />
@@ -36,7 +36,7 @@ export const PokecenterPage = () => {
                 src={not__pokemon}
                 alt="not pokemon picture"
               />
-              <p>Ещё не поступило ни одного покемона</p>
+              <p>No Pokemon have been received yet</p>
             </div>
           )}
         </article>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import styles from "./CreatePokemonPage.module.css";
 import placeholder from "../../../../assets/placeholder.png";
 import clsx from "clsx";
@@ -17,10 +17,11 @@ import {
 } from "../../../../helpers/validate";
 import { Loader } from "../../../../components/Loader/Loader";
 import { CustomSelect } from "../../../../components/CustomSelect/CustomSelect";
+import { generatorUniqueId } from "../../../../helpers/generateId";
 
 export const CreatePokemonPage = () => {
   //данные формы
-  const [type, setType] = useState<IOptions>();
+  const [types, setTypes] = useState<IOptions[]>([]);
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -43,7 +44,7 @@ export const CreatePokemonPage = () => {
   }, []);
 
   const onSubmit = () => {
-    onValidate(type, id, name, isError, setIsError);
+    onValidate(types, id, name, isError, setIsError);
 
     if (!isError.id && !isError.name && !isError.type) {
       setIsLoading(true);
@@ -54,7 +55,7 @@ export const CreatePokemonPage = () => {
           JSON.stringify([
             ...data,
             {
-              type,
+              types,
               id,
               name,
               description,
@@ -92,7 +93,7 @@ export const CreatePokemonPage = () => {
   };
 
   const clearForm = () => {
-    setType(undefined);
+    setTypes([]);
     setFile("");
     localStorage.setItem("img", "");
     setId("");
@@ -102,6 +103,21 @@ export const CreatePokemonPage = () => {
 
   let imgUrl = localStorage.getItem("img") || "";
 
+  const [selects, setSelects] = useState([{ id: 1 }]); // начальное состояние с одним инпутом
+
+  const handleAddSelect = (e: MouseEvent) => {
+    e.preventDefault();
+    const newSelect = { id: generatorUniqueId() };
+    setSelects([...selects, newSelect]);
+  };
+
+  const handleRemoveSelect = (e: MouseEvent, id: number) => {
+    e.preventDefault();
+
+    const updatedInputs = selects.filter((input) => input.id !== id);
+    setSelects(updatedInputs);
+  };
+
   return (
     <section className={styles.root}>
       {isLoading ? (
@@ -110,13 +126,53 @@ export const CreatePokemonPage = () => {
         </div>
       ) : (
         <form action="submit" className={styles.form}>
-          <CustomSelect
-            error={isError?.type ? isError.type : ""}
-            setType={(type: IOptions) => setType(type)}
-            type={type}
-            validate={() => validateType(type, isError, setIsError)}
-          />
+          <div className={styles.selects}>
+            <label className={styles.label} htmlFor="type">
+              Type<span>*</span>
+            </label>
+            <div className={clsx(styles.error__container)}>
+              {isError.type && (
+                <Tippy
+                  placement="bottom-end"
+                  arrow=""
+                  theme="error"
+                  content={isError.type}
+                >
+                  <div
+                    className={clsx(
+                      styles.tippy__error,
+                      styles.button__error,
+                      styles.types__error
+                    )}
+                  >
+                    !
+                  </div>
+                </Tippy>
+              )}
+            </div>
 
+            {selects.map((select) => (
+              <div key={select.id} className={styles.selects}>
+                <CustomSelect
+                  key={select.id}
+                  error={isError?.type ? isError.type : ""}
+                  setTypes={(prev: SetStateAction<IOptions[]>) =>
+                    setTypes(prev)
+                  }
+                  types={types}
+                  validate={() => validateType(types, isError, setIsError)}
+                  addSelect={(e: MouseEvent) => handleAddSelect(e)}
+                  removeSelect={(e: MouseEvent) =>
+                    handleRemoveSelect(e, select.id)
+                  }
+                  selects={selects}
+                />
+              </div>
+            ))}
+            <p className={styles.validate__descr}>
+              A maximum of 3 types can be selected.
+            </p>
+          </div>
           <div className={styles.center}>
             <label className={styles.label} htmlFor="id">
               ID<span>*</span>

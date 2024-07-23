@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { IPokemonData } from "../../../../types/pokemonTypes";
 import "../../../../PokemonTypes.css";
-import { Property, IRes } from "../../../../types/types";
+import { Property, IGetPokemonResponse } from "../../../../types/types";
 import { requestPokemonData } from "../../../../api/api";
 import { sort } from "../../../../helpers/sort";
 import { Loader } from "../../../../components/Loader/Loader";
@@ -29,11 +29,11 @@ export const Table = () => {
   const [dirHeight, setDirHeight] = useState<boolean>(true);
 
   useEffect(() => {
-    async function fetchData() {
+    function fetchData() {
       setLoading(true);
 
-      await requestPokemonData(offset, LIMIT)
-        .then((response?: IRes[]) => {
+      requestPokemonData(offset, LIMIT)
+        .then((response?: IGetPokemonResponse[]) => {
           if (response) {
             const array = response.map((_, i) => ({
               id: response[i].body.id,
