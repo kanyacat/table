@@ -37,7 +37,7 @@
 }
 
 .box {
-  padding: 4px 7px;
+  padding: 2px 7px;
   background-color: var(--light-color);
   border: 2px solid var(--main-color);
 
@@ -86,6 +86,7 @@
 }
 
 .icon {
+  margin-top: 3px;
   margin-right: 10px;
 }
 

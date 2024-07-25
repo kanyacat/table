@@ -3,14 +3,15 @@ import { hasDuplicates } from "./hasDuplicates";
 
 export const onValidate = (
   types: IOptions[] | undefined,
-  id: string | undefined,
+  id: string | undefined | null,
   name: string | undefined,
   isError: IError,
-  setIsError: React.Dispatch<React.SetStateAction<IError>>
+  setIsError: React.Dispatch<React.SetStateAction<IError>>,
+  prevName?: string | undefined
 ) => {
   validateType(types, isError, setIsError);
-  validateId(id, isError, setIsError);
-  validateName(name, isError, setIsError);
+  id !== null && validateId(id, isError, setIsError);
+  validateName(name, isError, setIsError, prevName);
 };
 
 export const validateType = (
@@ -96,7 +97,8 @@ export const validateId = (
 export const validateName = (
   name: string | undefined,
   isError: IError,
-  setIsError: React.Dispatch<React.SetStateAction<IError>>
+  setIsError: React.Dispatch<React.SetStateAction<IError>>,
+  prevName?: string | undefined
 ) => {
   const data: [] = JSON.parse(localStorage.getItem("pokemons") || "[]");
 
@@ -130,7 +132,7 @@ export const validateName = (
     return;
   }
 
-  if (data?.some((d: ICustomPokemon) => d.name === name)) {
+  if (data?.some((d: ICustomPokemon) => d.name === name) && name !== prevName) {
     setIsError({
       id: isError.id,
       name: (isError.name = "Имя должно быть уникальным"),

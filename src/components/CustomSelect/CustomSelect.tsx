@@ -7,11 +7,13 @@ import { options } from "../../configs/optionsTypesConfig";
 import Minus from "../../assets/minus.svg?react";
 //@ts-ignore
 import Plus from "../../assets/plus.svg?react";
+import { optionsType } from "../OptionsTypes/OptionsTypes";
 
 interface IProps {
   setTypes: Dispatch<SetStateAction<IOptions[]>>;
   error: string;
   types?: IOptions[];
+  id: number;
   validate: () => void;
   removeSelect: (e: MouseEvent) => void;
   addSelect: (e: MouseEvent) => void;
@@ -21,13 +23,21 @@ interface IProps {
 }
 
 export const CustomSelect = (props: IProps) => {
-  const { types, setTypes, error, validate, removeSelect, addSelect, selects } =
-    props;
+  const {
+    types,
+    setTypes,
+    error,
+    validate,
+    removeSelect,
+    addSelect,
+    selects,
+    id,
+  } = props;
 
   const [showOptions, setShowOptions] = useState(false);
   const [focusedOptionIndex, setFocusedOptionIndex] = useState<number>(-1);
 
-  const [type, setType] = useState<IOptions>();
+  const [type, setType] = useState<IOptions>(types[id] ? types[id] : undefined);
 
   const optionsRef = useRef(null);
 
@@ -121,8 +131,10 @@ export const CustomSelect = (props: IProps) => {
             >
               {type ? (
                 <p className={"type"}>
-                  <span className="icon">{type.icon}</span>
-                  {type.name}
+                  <span className="icon">
+                    {optionsType[type.name.toLowerCase()]}
+                  </span>
+                  {type?.name}
                 </p>
               ) : (
                 "Select type"
