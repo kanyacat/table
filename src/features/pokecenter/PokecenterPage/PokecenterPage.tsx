@@ -5,9 +5,14 @@ import { ICustomPokemon } from "../../../types/types";
 import { Header } from "../../../components/Header/Header";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
 
 export const PokecenterPage = () => {
-  const pokemons = JSON.parse(localStorage.getItem("pokemons") || "[]");
+  const [pokemons, setPokemons] = useState<ICustomPokemon[]>([]);
+
+  useEffect(() => {
+    setPokemons(JSON.parse(localStorage.getItem("pokemons") || "[]"));
+  }, []);
 
   return (
     <>
@@ -25,6 +30,7 @@ export const PokecenterPage = () => {
                   types={pokemon.types}
                   description={pokemon.description}
                   picture={pokemon.picture}
+                  setPokemons={setPokemons}
                 />
               );
             })

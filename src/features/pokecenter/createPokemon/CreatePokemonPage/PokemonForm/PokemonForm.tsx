@@ -21,15 +21,15 @@ interface IPokemonForm {
   name: string;
   description: string;
   file: string;
-  setTypes: (prev) => void;
-  setId: (prev) => void;
-  setName: (prev) => void;
-  setDescription: (prev) => void;
-  setFile: (prev) => void;
+  setTypes: React.Dispatch<React.SetStateAction<IOptions[]>>;
+  setId: React.Dispatch<React.SetStateAction<string>>;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
+  setFile: React.Dispatch<React.SetStateAction<string>>;
   isError: IError;
-  setIsError: (prev) => void;
+  setIsError: React.Dispatch<React.SetStateAction<IError>>;
   isEdit: boolean;
-  prevName: string;
+  prevName?: string;
 }
 
 export const PokemonForm = (props: IPokemonForm) => {
@@ -50,8 +50,6 @@ export const PokemonForm = (props: IPokemonForm) => {
     prevName,
   } = props;
 
-  // console.log(types);
-
   useEffect(() => {
     setFile(file);
     localStorage.setItem("img", "");
@@ -67,7 +65,7 @@ export const PokemonForm = (props: IPokemonForm) => {
     });
 
     setSelects(selects.length > 0 ? selects : [{ id: 0 }]);
-  }, [types]);
+  }, []);
 
   const handleAddSelect = (e: MouseEvent) => {
     e.preventDefault();
@@ -98,6 +96,11 @@ export const PokemonForm = (props: IPokemonForm) => {
         };
       }
     }
+  };
+
+  const deleteImgHandler = () => {
+    setFile("");
+    localStorage.setItem("img", "");
   };
 
   return (
@@ -249,6 +252,11 @@ export const PokemonForm = (props: IPokemonForm) => {
           onChange={fileHandler}
           accept="image/png, image/jpeg"
         />
+        {file && (
+          <button onClick={deleteImgHandler} className={styles.btn}>
+            Удалить изображение
+          </button>
+        )}
       </div>
     </form>
   );

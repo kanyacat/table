@@ -89,6 +89,7 @@ export const CreatePokemonPage = () => {
           setFile={(prev) => setFile(prev)}
           isError={isError}
           setIsError={(prev) => setIsError(prev)}
+          isEdit={false}
         />
       )}
       <div className={styles.btns}>

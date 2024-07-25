@@ -37,7 +37,13 @@ export const CustomSelect = (props: IProps) => {
   const [showOptions, setShowOptions] = useState(false);
   const [focusedOptionIndex, setFocusedOptionIndex] = useState<number>(-1);
 
-  const [type, setType] = useState<IOptions>(types[id] ? types[id] : undefined);
+  const typeId = types ? types[id] : undefined;
+
+  const [type, setType] = useState<IOptions | undefined>(
+    typeId ? typeId : undefined
+  );
+
+  // console.log(types, selects);
 
   const optionsRef = useRef(null);
 

@@ -15,11 +15,13 @@ export interface ICardProps
   extends ICustomPokemon,
     DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   id: string;
+  setPokemons: React.Dispatch<React.SetStateAction<ICustomPokemon[]>>;
   className?: string;
 }
 
 export const Card = (props: ICardProps) => {
-  const { id, name, types, description, picture, className } = props;
+  const { id, name, types, description, picture, setPokemons, className } =
+    props;
 
   const [editIsOpen, setEditIsOpen] = useState(false);
 
@@ -27,7 +29,13 @@ export const Card = (props: ICardProps) => {
     setEditIsOpen(true);
   };
 
-  const handleDeletePokemon = () => {};
+  const handleDeletePokemon = () => {
+    let data = JSON.parse(localStorage.getItem("pokemons") || "[]");
+    data = data.filter((pokemon: ICustomPokemon) => pokemon.id !== id);
+
+    localStorage.setItem("pokemons", JSON.stringify([...data]));
+    setPokemons(JSON.parse(localStorage.getItem("pokemons") || "[]"));
+  };
 
   return (
     <div id="card" className={clsx(styles.root, className)}>
@@ -69,6 +77,7 @@ export const Card = (props: ICardProps) => {
             description={description}
             picture={picture}
             setEditIsOpen={() => setEditIsOpen(false)}
+            setPokemons={setPokemons}
           />,
           document.body
         )}

@@ -2,7 +2,7 @@ import { ICustomPokemon, IError, IOptions } from "../types/types";
 import { hasDuplicates } from "./hasDuplicates";
 
 export const onValidate = (
-  types: IOptions[] | undefined,
+  types: IOptions[] | [],
   id: string | undefined | null,
   name: string | undefined,
   isError: IError,
@@ -15,7 +15,7 @@ export const onValidate = (
 };
 
 export const validateType = (
-  types: IOptions[] | undefined,
+  types: IOptions[] | [],
   isError: IError,
   setIsError: React.Dispatch<React.SetStateAction<IError>>
 ) => {

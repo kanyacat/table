@@ -121,3 +121,12 @@
   height: 220px;
   object-fit: cover;
 }
+
+.btn {
+  color: var(--light-color);
+  background-color: var(--main-color);
+  border-radius: 14px;
+
+  font-weight: 600;
+  font-size: 18px;
+}

@@ -11,10 +11,12 @@ import { Modal } from "../../Modal/Modal";
 
 interface IEditProps extends ICardProps {
   setEditIsOpen: () => void;
+  setPokemons: React.Dispatch<React.SetStateAction<ICustomPokemon[]>>;
 }
 
 export const Edit = (props: IEditProps) => {
-  const { id, name, types, description, picture, setEditIsOpen } = props;
+  const { id, name, types, description, picture, setEditIsOpen, setPokemons } =
+    props;
 
   //данные формы
   const [editTypes, setEditTypes] = useState<IOptions[]>(types);
@@ -30,7 +32,6 @@ export const Edit = (props: IEditProps) => {
     file: "",
   });
 
-  const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = () => {
@@ -49,13 +50,10 @@ export const Edit = (props: IEditProps) => {
         findPokemon.picture = editFile;
 
         localStorage.setItem("pokemons", JSON.stringify([...data]));
-        setIsSuccess(true);
+        setPokemons(JSON.parse(localStorage.getItem("pokemons") || "[]"));
         setIsLoading(false);
+        setEditIsOpen();
       }, 1000);
-
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 3000);
     }
   };
 
@@ -99,14 +97,6 @@ export const Edit = (props: IEditProps) => {
           </div>
         </>
       )}
-      {isSuccess &&
-        createPortal(
-          <Modal>
-            <p> Данные покемона были успешно обновлены!</p>
-            <p>Перезагрузите страницу, чтобы изменения вступили в силу.</p>
-          </Modal>,
-          document.body
-        )}
     </div>
   );
 };
