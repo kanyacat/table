@@ -1,0 +1,50 @@
+.root {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  padding: 20px;
+
+  cursor: pointer;
+}
+
+.img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+}
+
+.description {
+  position: absolute;
+
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  width: 300px;
+
+  display: none;
+  cursor: auto;
+
+  z-index: 100;
+}
+
+.text {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.descr {
+  border-top: 1px solid #e4e4e4;
+  padding-top: 5px;
+}
+
+.type {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  margin-bottom: 3px;
+}
+
+.root:hover .description {
+  display: block;
+}

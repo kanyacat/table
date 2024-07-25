@@ -12,11 +12,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tippyjs/react": "^4.2.6",
+    "clsx": "^2.1.1",
     "gh-pages": "^6.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1",
     "superagent": "^9.0.2",
+    "tippy.js": "^6.3.7",
     "vite-plugin-svg-sprite": "^0.5.2",
     "vite-plugin-svgr": "^4.2.0"
   },

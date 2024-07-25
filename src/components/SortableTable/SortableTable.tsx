@@ -78,8 +78,8 @@ export const SortableTable: FC<ISortableTableProps> = ({
         </tr>
       </thead>
       <tbody>
-        {table.map((row: any, index: number) => (
-          <tr key={index} onClick={() => navigate(`/table/pokemon/${row.id}`)}>
+        {table.map((row: any) => (
+          <tr key={row.id} onClick={() => navigate(`/table/pokemon/${row.id}`)}>
             <td
               className={styles.grab}
               draggable={true}
@@ -92,7 +92,9 @@ export const SortableTable: FC<ISortableTableProps> = ({
               <DndIcon />
             </td>
             {columns.map((column) => (
-              <td key={row[column.field]}>{row[column.field]}</td>
+              <td className={styles.name} key={row[column.field]}>
+                {row[column.field]}
+              </td>
             ))}
           </tr>
         ))}

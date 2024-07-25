@@ -1,6 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+}
 
 :root {
+  --main-color: #db7676;
+  --light-color: #fff;
+
   font-family: "Poppins", sans-serif;
 
   line-height: 1.5;
@@ -13,16 +22,40 @@
 
   background: -webkit-linear-gradient(
     90deg,
-    #db7676,
-    #ffffff,
-    #db7676
+    var(--main-color),
+    var(--light-color),
+    var(--main-color)
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     90deg,
-    #db7676,
-    #ffffff,
-    #db7676
+    var(--main-color),
+    var(--light-color),
+    var(--main-color)
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+li,
+ul,
+ol {
+  list-style-type: none;
+}
+
+strong {
+  margin-right: 10px;
+  padding: 3px 15px;
+  border-radius: 180px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-transform: lowercase;
 }
 
 body {
@@ -38,7 +71,8 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+button,
+.button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -48,12 +82,28 @@ button {
   background-color: none;
   cursor: pointer;
   transition: border-color 0.25s;
-  background-color: white;
+  background-color: var(--light-color);
 }
 
 button:hover,
 button:active,
 button:focus,
-button:focus-visible {
-  outline: 1px solid #db7676;
+button:focus-visible,
+.button:hover,
+.button:active,
+.button:focus,
+.button:focus-visible {
+  outline: 1px solid var(--main-color);
+}
+
+.dragged {
+  background-color: var(--main-color);
+}
+
+.tippy-box[data-theme~="error"] {
+  background-color: var(--light-color);
+  color: red;
+  border: 1px solid red;
+  border-radius: 4px;
+  padding: 6px;
 }
