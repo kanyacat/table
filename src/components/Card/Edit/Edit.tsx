@@ -6,9 +6,6 @@ import { ICardProps } from "../Card";
 import clsx from "clsx";
 import { onValidate } from "../../../helpers/validate";
 import { Loader } from "../../Loader/Loader";
-import { createPortal } from "react-dom";
-import { Modal } from "../../Modal/Modal";
-
 interface IEditProps extends ICardProps {
   setEditIsOpen: () => void;
   setPokemons: React.Dispatch<React.SetStateAction<ICustomPokemon[]>>;

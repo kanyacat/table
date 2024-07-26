@@ -1,5 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from "react";
-import { generatorUniqueId } from "../../../../../helpers/generateId";
+import React, { SetStateAction, useEffect } from "react";
 import Tippy from "@tippyjs/react";
 import clsx from "clsx";
 import { CustomSelect } from "../../../../../components/CustomSelect/CustomSelect";
@@ -14,6 +13,7 @@ import "../../../../../index.css";
 import styles from "./PokemonForm.module.css";
 import { IError, IOptions } from "../../../../../types/types";
 import placeholder from "../../../../../assets/placeholder.png";
+import { Chip } from "../../../../../components/Chip/Chip";
 
 interface IPokemonForm {
   types: IOptions[];
@@ -54,31 +54,6 @@ export const PokemonForm = (props: IPokemonForm) => {
     setFile(file);
     localStorage.setItem("img", "");
   }, []);
-
-  const [selects, setSelects] = useState([{ id: 0 }]); // начальное состояние с одним инпутом
-
-  useEffect(() => {
-    let selects = [];
-
-    selects = types.map((t, i) => {
-      return { id: i };
-    });
-
-    setSelects(selects.length > 0 ? selects : [{ id: 0 }]);
-  }, []);
-
-  const handleAddSelect = (e: MouseEvent) => {
-    e.preventDefault();
-    const newSelect = { id: generatorUniqueId() };
-    setSelects([...selects, newSelect]);
-  };
-
-  const handleRemoveSelect = (e: MouseEvent, id: number) => {
-    e.preventDefault();
-
-    const updatedInputs = selects.filter((input) => input.id !== id);
-    setSelects(updatedInputs);
-  };
 
   const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -129,25 +104,28 @@ export const PokemonForm = (props: IPokemonForm) => {
             </Tippy>
           )}
         </div>
-
-        {selects.map((select) => (
-          <div key={select.id} className={styles.selects}>
-            <CustomSelect
-              key={select.id}
-              error={isError?.type ? isError.type : ""}
-              setTypes={(prev: SetStateAction<IOptions[]>) => setTypes(prev)}
-              types={types}
-              validate={() => validateType(types, isError, setIsError)}
-              addSelect={(e: MouseEvent) => handleAddSelect(e)}
-              removeSelect={(e: MouseEvent) => handleRemoveSelect(e, select.id)}
-              selects={selects}
-              id={select.id}
-            />
-          </div>
-        ))}
+        <div className={styles.selects}>
+          <CustomSelect
+            error={isError?.type ? isError.type : ""}
+            setTypes={(prev: SetStateAction<IOptions[]>) => setTypes(prev)}
+            types={types}
+            validate={() => validateType(types, isError, setIsError)}
+          />
+        </div>
         <p className={styles.validate__descr}>
           A maximum of 3 types can be selected.
         </p>
+        {types?.map((type, index) => {
+          return (
+            <Chip
+              key={index}
+              value={type}
+              types={types}
+              setTypes={(prev: SetStateAction<IOptions[]>) => setTypes(prev)}
+              validate={() => validateType(types, isError, setIsError)}
+            />
+          );
+        })}
       </div>
       <div className={styles.center}>
         <label className={styles.label} htmlFor="id">

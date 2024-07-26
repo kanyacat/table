@@ -19,8 +19,6 @@ export const validateType = (
   isError: IError,
   setIsError: React.Dispatch<React.SetStateAction<IError>>
 ) => {
-  console.log(types);
-
   if (types?.length == 0) {
     setIsError({
       id: isError.id,
