@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect } from "react";
+import React, { useEffect } from "react";
 import Tippy from "@tippyjs/react";
 import clsx from "clsx";
 import { CustomSelect } from "../../../../../components/CustomSelect/CustomSelect";
@@ -11,50 +11,28 @@ import {
 import "tippy.js/dist/tippy.css";
 import "../../../../../index.css";
 import styles from "./PokemonForm.module.css";
-import { IError, IOptions } from "../../../../../types/types";
+import { IError, IFormData } from "../../../../../types/types";
 import placeholder from "../../../../../assets/placeholder.png";
 import { Chip } from "../../../../../components/Chip/Chip";
 import { useTranslation } from "react-i18next";
 
 interface IPokemonForm {
-  types: IOptions[];
-  id: string;
-  name: string;
-  description: string;
-  file: string;
-  setTypes: React.Dispatch<React.SetStateAction<IOptions[]>>;
-  setId: React.Dispatch<React.SetStateAction<string>>;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  setFile: React.Dispatch<React.SetStateAction<string>>;
+  formData: IFormData;
   isError: IError;
   setIsError: React.Dispatch<React.SetStateAction<IError>>;
   isEdit: boolean;
   prevName?: string;
+  setFormData: React.Dispatch<React.SetStateAction<IFormData>>;
 }
 
 export const PokemonForm = (props: IPokemonForm) => {
-  const {
-    types,
-    id,
-    name,
-    description,
-    file,
-    setTypes,
-    setId,
-    setName,
-    setDescription,
-    setFile,
-    isError,
-    setIsError,
-    isEdit,
-    prevName,
-  } = props;
+  const { formData, setFormData, isError, setIsError, isEdit, prevName } =
+    props;
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    setFile(file);
+    setFormData({ ...formData, file: formData.file });
     localStorage.setItem("img", "");
   }, []);
 
@@ -70,14 +48,14 @@ export const PokemonForm = (props: IPokemonForm) => {
 
         reader.onload = () => {
           localStorage.setItem("img", reader.result as string);
-          setFile(localStorage.getItem("img") || "");
+          setFormData({ ...formData, file: localStorage.getItem("img") || "" });
         };
       }
     }
   };
 
   const deleteImgHandler = () => {
-    setFile("");
+    setFormData({ ...formData, file: "" });
     localStorage.setItem("img", "");
   };
 
@@ -111,21 +89,22 @@ export const PokemonForm = (props: IPokemonForm) => {
         <div className={styles.selects}>
           <CustomSelect
             error={isError?.type ? isError.type : ""}
-            setTypes={(prev: SetStateAction<IOptions[]>) => setTypes(prev)}
-            types={types}
-            validate={() => validateType(types, isError, setIsError)}
+            setFormData={(prev) => setFormData(prev)}
+            types={formData.types}
+            validate={() => validateType(formData.types, isError, setIsError)}
           />
         </div>
         <p className={styles.validate__descr}>
           {t("A maximum of 3 types can be selected.")}
         </p>
-        {types?.map((type, index) => {
+        {formData?.types.map((type, index) => {
           return (
             <Chip
               key={index}
-              value={type}
-              types={types}
-              setTypes={(prev: SetStateAction<IOptions[]>) => setTypes(prev)}
+              type={type}
+              types={formData.types}
+              formData={formData}
+              setFormData={(prev) => setFormData(prev)}
             />
           );
         })}
@@ -149,11 +128,18 @@ export const PokemonForm = (props: IPokemonForm) => {
           )}
           <input
             id="id"
-            value={id?.toString().replace(/(\d{3}(?=(?:\d)))/g, "$1" + "-")}
-            onKeyUp={() => setId(id.replace(/\D+/g, ""))}
+            value={formData.id
+              ?.toString()
+              .replace(/(\d{3}(?=(?:\d)))/g, "$1" + "-")}
+            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) =>
+              setFormData({
+                ...formData,
+                id: e.currentTarget.value.replace(/\D+/g, ""),
+              })
+            }
             placeholder="XXX-XXX-XXX"
-            onChange={(e) => setId(e.target.value)}
-            onBlur={() => validateId(id, isError, setIsError)}
+            onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+            onBlur={() => validateId(formData.id, isError, setIsError)}
             className={clsx(
               styles.input,
               isError.id ? styles.input__error : ""
@@ -191,9 +177,11 @@ export const PokemonForm = (props: IPokemonForm) => {
               styles.input,
               isError?.name ? styles.input__error : ""
             )}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onBlur={() => validateName(name, isError, setIsError, prevName)}
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            onBlur={() =>
+              validateName(formData.name, isError, setIsError, prevName)
+            }
             type="text"
             maxLength={20}
           />
@@ -207,8 +195,10 @@ export const PokemonForm = (props: IPokemonForm) => {
         </label>
         <textarea
           className={clsx(styles.input, styles.textarea)}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={formData.description}
+          onChange={(e) =>
+            setFormData({ ...formData, description: e.target.value })
+          }
           maxLength={250}
         />
         <p className={styles.validate__descr}>
@@ -220,7 +210,7 @@ export const PokemonForm = (props: IPokemonForm) => {
         <label className={styles.label__file} htmlFor="file">
           <img
             className={styles.img}
-            src={file ? file : placeholder}
+            src={formData.file ? formData.file : placeholder}
             alt={"pokemon image"}
           />
         </label>
@@ -234,7 +224,7 @@ export const PokemonForm = (props: IPokemonForm) => {
           onChange={fileHandler}
           accept="image/png, image/jpeg"
         />
-        {file && (
+        {formData.file && (
           <button onClick={deleteImgHandler} className={styles.btn}>
             {t("Delete picture")}
           </button>

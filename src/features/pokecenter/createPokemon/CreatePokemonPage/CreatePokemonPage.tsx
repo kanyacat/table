@@ -4,24 +4,25 @@ import clsx from "clsx";
 import "tippy.js/dist/tippy.css";
 import "../../../../index.css";
 import { createPortal } from "react-dom";
-import { Link } from "react-router-dom";
-import { IError, IOptions } from "../../../../types/types";
+import { Link, useNavigate } from "react-router-dom";
+import { IError, IFormData } from "../../../../types/types";
 import { onValidate } from "../../../../helpers/validate";
 import { Loader } from "../../../../components/Loader/Loader";
 import { PokemonForm } from "./PokemonForm/PokemonForm";
 import { Modal } from "../../../../components/Modal/Modal";
 import { useTranslation } from "react-i18next";
-import i18next from "i18next";
 
 export const CreatePokemonPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  //данные формы
-  const [types, setTypes] = useState<IOptions[]>([]);
-  const [id, setId] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [file, setFile] = useState("");
+  const [formData, setFormData] = useState<IFormData>({
+    types: [],
+    id: "",
+    name: "",
+    description: "",
+    file: "",
+  });
 
   const [isError, setIsError] = useState<IError>({
     type: "",
@@ -34,7 +35,7 @@ export const CreatePokemonPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = () => {
-    onValidate(types, id, name, isError, setIsError);
+    onValidate(formData.types, formData.id, formData.name, isError, setIsError);
 
     if (!isError.id && !isError.name && !isError.type) {
       setIsLoading(true);
@@ -45,11 +46,11 @@ export const CreatePokemonPage = () => {
           JSON.stringify([
             ...data,
             {
-              types,
-              id,
-              name,
-              description,
-              picture: file,
+              types: formData.types,
+              id: formData.id,
+              name: formData.name,
+              description: formData.description,
+              picture: formData.file,
             },
           ])
         );
@@ -60,17 +61,20 @@ export const CreatePokemonPage = () => {
 
       setTimeout(() => {
         setIsSuccess(false);
-      }, 3000);
+        navigate("/table/pokecenter");
+      }, 2000);
     }
   };
 
   const clearForm = () => {
-    setTypes([]);
-    setFile("");
+    setFormData({
+      description: "",
+      file: "",
+      id: "",
+      name: "",
+      types: [],
+    });
     localStorage.setItem("img", "");
-    setId("");
-    setName("");
-    setDescription("");
   };
 
   return (
@@ -81,16 +85,8 @@ export const CreatePokemonPage = () => {
         </div>
       ) : (
         <PokemonForm
-          types={types}
-          id={id}
-          name={name}
-          description={description}
-          file={file}
-          setTypes={(prev) => setTypes(prev)}
-          setId={(prev) => setId(prev)}
-          setName={(prev) => setName(prev)}
-          setDescription={(prev) => setDescription(prev)}
-          setFile={(prev) => setFile(prev)}
+          formData={formData}
+          setFormData={(prev) => setFormData(prev)}
           isError={isError}
           setIsError={(prev) => setIsError(prev)}
           isEdit={false}

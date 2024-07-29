@@ -1,29 +1,31 @@
 import { useState } from "react";
 import { PokemonForm } from "../../../features/pokecenter/createPokemon/CreatePokemonPage/PokemonForm/PokemonForm";
 import styles from "./Edit.module.css";
-import { ICustomPokemon, IError, IOptions } from "../../../types/types";
+import { ICustomPokemon, IError, IFormData } from "../../../types/types";
 import { ICardProps } from "../Card";
 import clsx from "clsx";
 import { onValidate } from "../../../helpers/validate";
 import { Loader } from "../../Loader/Loader";
 import { useTranslation } from "react-i18next";
-interface IEditProps extends ICardProps {
+interface IEditProps extends Omit<ICardProps, "picture"> {
+  file: string;
   setEditIsOpen: () => void;
   setPokemons: React.Dispatch<React.SetStateAction<ICustomPokemon[]>>;
 }
 
 export const Edit = (props: IEditProps) => {
-  const { id, name, types, description, picture, setEditIsOpen, setPokemons } =
+  const { id, name, types, description, file, setEditIsOpen, setPokemons } =
     props;
 
   const { t } = useTranslation();
 
-  //данные формы
-  const [editTypes, setEditTypes] = useState<IOptions[]>(types);
-  const [editId, setEditId] = useState(id);
-  const [editName, setEditName] = useState(name);
-  const [editDescription, setEditDescription] = useState(description);
-  const [editFile, setEditFile] = useState(picture);
+  const [editData, setEditData] = useState<IFormData>({
+    types,
+    id,
+    name,
+    description,
+    file,
+  });
 
   const [isError, setIsError] = useState<IError>({
     type: "",
@@ -35,7 +37,7 @@ export const Edit = (props: IEditProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = () => {
-    onValidate(editTypes, null, editName, isError, setIsError, name);
+    onValidate(editData.types, null, editData.name, isError, setIsError, name);
 
     if (!isError.id && !isError.name && !isError.type) {
       setIsLoading(true);
@@ -44,10 +46,10 @@ export const Edit = (props: IEditProps) => {
 
         const findPokemon = data.find((obj: ICustomPokemon) => obj.id === id);
 
-        findPokemon.name = editName;
-        findPokemon.types = editTypes;
-        findPokemon.description = editDescription;
-        findPokemon.picture = editFile;
+        findPokemon.name = editData.name;
+        findPokemon.types = editData.types;
+        findPokemon.description = editData.description;
+        findPokemon.picture = editData.file;
 
         localStorage.setItem("pokemons", JSON.stringify([...data]));
         setPokemons(JSON.parse(localStorage.getItem("pokemons") || "[]"));
@@ -66,17 +68,9 @@ export const Edit = (props: IEditProps) => {
       ) : (
         <>
           <PokemonForm
-            types={editTypes}
-            file={editFile}
-            id={editId}
-            name={editName}
-            description={editDescription}
+            formData={editData}
+            setFormData={setEditData}
             isError={isError}
-            setTypes={(prev) => setEditTypes(prev)}
-            setId={(prev) => setEditId(prev)}
-            setName={(prev) => setEditName(prev)}
-            setDescription={(prev) => setEditDescription(prev)}
-            setFile={(prev) => setEditFile(prev)}
             setIsError={(prev) => setIsError(prev)}
             isEdit={true}
             prevName={name}
