@@ -38,12 +38,8 @@
 .tippy__error {
   position: absolute;
 
-  top: 7px;
+  top: 6px;
   left: -35px;
-}
-
-.types__error {
-  left: -55px;
 }
 
 .textarea {

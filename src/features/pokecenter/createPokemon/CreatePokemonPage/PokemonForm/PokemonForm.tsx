@@ -14,6 +14,7 @@ import styles from "./PokemonForm.module.css";
 import { IError, IOptions } from "../../../../../types/types";
 import placeholder from "../../../../../assets/placeholder.png";
 import { Chip } from "../../../../../components/Chip/Chip";
+import { useTranslation } from "react-i18next";
 
 interface IPokemonForm {
   types: IOptions[];
@@ -50,6 +51,8 @@ export const PokemonForm = (props: IPokemonForm) => {
     prevName,
   } = props;
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     setFile(file);
     localStorage.setItem("img", "");
@@ -82,7 +85,8 @@ export const PokemonForm = (props: IPokemonForm) => {
     <form action="submit" className={styles.form}>
       <div className={styles.selects}>
         <label className={styles.label} htmlFor="type">
-          Type<span>*</span>
+          {t("Type")}
+          <span>*</span>
         </label>
         <div className={clsx(styles.error__container)}>
           {isError.type && (
@@ -113,7 +117,7 @@ export const PokemonForm = (props: IPokemonForm) => {
           />
         </div>
         <p className={styles.validate__descr}>
-          A maximum of 3 types can be selected.
+          {t("A maximum of 3 types can be selected.")}
         </p>
         {types?.map((type, index) => {
           return (
@@ -122,7 +126,6 @@ export const PokemonForm = (props: IPokemonForm) => {
               value={type}
               types={types}
               setTypes={(prev: SetStateAction<IOptions[]>) => setTypes(prev)}
-              validate={() => validateType(types, isError, setIsError)}
             />
           );
         })}
@@ -162,11 +165,12 @@ export const PokemonForm = (props: IPokemonForm) => {
         </div>
 
         <p className={styles.validate__descr}>
-          The ID must be unique and consist of 9 digits.
+          {t("The ID must be unique and consist of 9 digits.")}
         </p>
 
         <label className={styles.label} htmlFor="name">
-          Name<span>*</span>
+          {t("Name")}
+          <span>*</span>
         </label>
         <div className={styles.error__container}>
           {isError?.name && (
@@ -195,11 +199,11 @@ export const PokemonForm = (props: IPokemonForm) => {
           />
         </div>
         <p className={styles.validate__descr}>
-          The name must be unique up to 20 Latin letters.
+          {t("The name must be unique up to 20 Latin letters.")}
         </p>
 
         <label className={styles.label} htmlFor="">
-          Description
+          {t("Description")}
         </label>
         <textarea
           className={clsx(styles.input, styles.textarea)}
@@ -208,7 +212,7 @@ export const PokemonForm = (props: IPokemonForm) => {
           maxLength={250}
         />
         <p className={styles.validate__descr}>
-          The length of the description should not exceed 250 characters.
+          {t("The length of the description should not exceed 250 characters.")}
         </p>
       </div>
       <div className={styles.input__img}>
@@ -221,7 +225,7 @@ export const PokemonForm = (props: IPokemonForm) => {
           />
         </label>
         <p className={styles.validate__descr}>
-          Only images up to 2 MB are allowed.
+          {t("Only images up to 2 MB are allowed.")}
         </p>
         <input
           id="file"
@@ -232,7 +236,7 @@ export const PokemonForm = (props: IPokemonForm) => {
         />
         {file && (
           <button onClick={deleteImgHandler} className={styles.btn}>
-            Удалить изображение
+            {t("Delete picture")}
           </button>
         )}
       </div>

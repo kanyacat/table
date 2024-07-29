@@ -8,12 +8,19 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh"],
+  plugins: ["react-refresh", "i18next"],
   rules: {
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },
     ],
     "@typescript-eslint/ban-ts-comment": "warn",
+    "i18next/no-literal-string": [
+      "warn",
+      {
+        markupOnly: true,
+        ignoreAttribute: ["data-testid", "to"],
+      },
+    ],
   },
 };

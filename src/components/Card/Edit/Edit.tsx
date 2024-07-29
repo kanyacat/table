@@ -6,6 +6,7 @@ import { ICardProps } from "../Card";
 import clsx from "clsx";
 import { onValidate } from "../../../helpers/validate";
 import { Loader } from "../../Loader/Loader";
+import { useTranslation } from "react-i18next";
 interface IEditProps extends ICardProps {
   setEditIsOpen: () => void;
   setPokemons: React.Dispatch<React.SetStateAction<ICustomPokemon[]>>;
@@ -14,6 +15,8 @@ interface IEditProps extends ICardProps {
 export const Edit = (props: IEditProps) => {
   const { id, name, types, description, picture, setEditIsOpen, setPokemons } =
     props;
+
+  const { t } = useTranslation();
 
   //данные формы
   const [editTypes, setEditTypes] = useState<IOptions[]>(types);
@@ -83,13 +86,13 @@ export const Edit = (props: IEditProps) => {
               className={clsx(styles.back, styles.btn)}
               onClick={setEditIsOpen}
             >
-              Back
+              {t("Back")}
             </button>
             <button
               className={clsx(styles.save, styles.btn)}
               onClick={onSubmit}
             >
-              Save
+              {t("Save")}
             </button>
           </div>
         </>

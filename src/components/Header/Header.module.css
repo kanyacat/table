@@ -1,5 +1,9 @@
-.btns {
+.root {
   margin-bottom: 25px;
+}
+
+.btns {
+  margin-bottom: 20px;
 }
 
 .btn {

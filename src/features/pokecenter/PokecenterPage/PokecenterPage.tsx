@@ -6,8 +6,11 @@ import { Header } from "../../../components/Header/Header";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const PokecenterPage = () => {
+  const { t } = useTranslation();
+
   const [pokemons, setPokemons] = useState<ICustomPokemon[]>([]);
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export const PokecenterPage = () => {
                 src={not__pokemon}
                 alt="not pokemon picture"
               />
-              <p>No Pokemon have been received yet</p>
+              <p>{t("No Pokemon have been received yet")}</p>
             </div>
           )}
         </article>

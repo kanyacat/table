@@ -11,10 +11,14 @@ import { PokemonType } from "../../../../components/PokemonType/PokemonType";
 import { columns } from "../../../../configs/tableColumnConfig";
 import styles from "./PokedexTable.module.css";
 import { LIMIT, ROWS_PER_PAGE, TOTAL_COUNT } from "../../../../consts";
+import { useTranslation } from "react-i18next";
 
 const getTotalPageCount = (rowCount: number): number =>
   Math.ceil(rowCount / ROWS_PER_PAGE);
+
 export const Table = () => {
+  const { t } = useTranslation();
+
   const [tableRows, setTableRows] = useState<IPokemonData[]>([]);
 
   const [loading, setLoading] = useState(false);
@@ -64,26 +68,26 @@ export const Table = () => {
 
   const headerConfig = [
     {
-      name: "Move",
+      name: "",
     },
     {
-      name: "Id",
+      name: "ID",
       sort: () => handleClick(Property.ID, dirId, setDirId),
     },
     {
-      name: "Name",
+      name: `${t("Name")}`,
       sort: () => handleClick(Property.NAME, dirName, setDirName),
     },
     {
-      name: "Types",
+      name: `${t("Types")}`,
       sort: () => handleClick(Property.TYPES, dirTypes, setDirTypes),
     },
     {
-      name: "Weight",
+      name: `${t("Weight")}`,
       sort: () => handleClick(Property.WEIGHT, dirWeight, setDirWeight),
     },
     {
-      name: "Height",
+      name: `${t("Height")}`,
       sort: () => handleClick(Property.HEIGHT, dirHeight, setDirHeight),
     },
   ];

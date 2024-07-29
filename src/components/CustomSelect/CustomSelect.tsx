@@ -3,7 +3,7 @@ import styles from "./CustomSelect.module.css";
 import clsx from "clsx";
 import { IOptions } from "../../types/types";
 import { options } from "../../configs/optionsTypesConfig";
-import { optionsType } from "../OptionsTypes/OptionsTypes";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   setTypes: Dispatch<SetStateAction<IOptions[]>>;
@@ -14,14 +14,12 @@ interface IProps {
 }
 
 export const CustomSelect = (props: IProps) => {
-  const { types, setTypes, error, validate, id } = props;
+  const { types, setTypes, error, validate } = props;
+
+  const { t } = useTranslation();
 
   const [showOptions, setShowOptions] = useState(false);
   const [focusedOptionIndex, setFocusedOptionIndex] = useState<number>(-1);
-
-  const typeId = types && id ? types[id] : undefined;
-
-  const [type] = useState<IOptions | undefined>(typeId ? typeId : undefined);
 
   const optionsRef = useRef(null);
 
@@ -69,16 +67,7 @@ export const CustomSelect = (props: IProps) => {
               )}
               onClick={() => setShowOptions(!showOptions)}
             >
-              {type ? (
-                <p className={styles.type}>
-                  <span className={styles.icon}>
-                    {optionsType[type.name.toLowerCase()]}
-                  </span>
-                  {type?.name}
-                </p>
-              ) : (
-                <p>Select type</p>
-              )}
+              <p>{t("Select type")}</p>
             </div>
           </div>
           <ul
@@ -103,7 +92,7 @@ export const CustomSelect = (props: IProps) => {
               >
                 <p className={styles.type}>
                   <span className={styles.icon}>{option.icon}</span>
-                  {option.name}
+                  {t(`${option.name.toLowerCase()}`)}
                 </p>
               </li>
             ))}

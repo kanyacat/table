@@ -10,8 +10,12 @@ import { onValidate } from "../../../../helpers/validate";
 import { Loader } from "../../../../components/Loader/Loader";
 import { PokemonForm } from "./PokemonForm/PokemonForm";
 import { Modal } from "../../../../components/Modal/Modal";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 export const CreatePokemonPage = () => {
+  const { t } = useTranslation();
+
   //данные формы
   const [types, setTypes] = useState<IOptions[]>([]);
   const [id, setId] = useState("");
@@ -94,16 +98,16 @@ export const CreatePokemonPage = () => {
       )}
       <div className={styles.btns}>
         <Link to="/table/pokecenter" className={clsx(styles.close)}>
-          Back
+          {t("Back")}
         </Link>
         <button className={styles.add} onClick={onSubmit}>
-          Add
+          {t("Add")}
         </button>
       </div>
       {isSuccess &&
         createPortal(
           <Modal>
-            <p>Покемон был успешно добавлен в покецентр!</p>
+            <p>{t("Pokemon has been successfully added to the pokecenter!")}</p>
           </Modal>,
           document.body
         )}

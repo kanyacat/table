@@ -3,6 +3,7 @@ import { optionsType } from "../OptionsTypes/OptionsTypes";
 import styles from "./Chip.module.css";
 //@ts-ignore
 import Delete from "../../assets/close.svg?react";
+import { useTranslation } from "react-i18next";
 
 interface IChipProps {
   value: IOptions;
@@ -11,7 +12,7 @@ interface IChipProps {
 }
 
 export const Chip = ({ value, types, setTypes }: IChipProps) => {
-  console.log(types);
+  const { t } = useTranslation();
 
   const handleRemoveSelectClick = (e: MouseEvent) => {
     e.preventDefault();
@@ -29,7 +30,7 @@ export const Chip = ({ value, types, setTypes }: IChipProps) => {
       <span className={styles.icon}>
         {optionsType[value.name.toLowerCase()]}
       </span>
-      <p>{value.name}</p>
+      <p className={styles.name}>{t(`${value.name.toLowerCase()}`)}</p>
       <Delete className={styles.delete} onClick={handleRemoveSelectClick} />
     </div>
   );
