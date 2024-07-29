@@ -8,8 +8,11 @@ import { getPokemon } from "../../../api/api";
 import { Loader } from "../../../components/Loader/Loader";
 import { PokemonType } from "../../../components/PokemonType/PokemonType";
 import { IGetPokemonResponse } from "../../../types/types";
+import { useTranslation } from "react-i18next";
 
 export const PokemonPage = () => {
+  const { t } = useTranslation("translation");
+
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
 
@@ -63,13 +66,13 @@ export const PokemonPage = () => {
                       );
                     })}
                   </div>
-                  <h2 className={styles.base__stats}>Base stats</h2>
+                  <h2 className={styles.base__stats}>{t("Base stats")}</h2>
                   <ul>
                     {data?.stats?.map((st) => {
                       return (
                         <li key={st.stat.url}>
                           <p className={styles.stat__title}>
-                            <span>{st.stat.name}</span>
+                            <span>{t(`${st.stat.name}`)}</span>
                             <span className={styles.stat}>{st.base_stat}</span>
                           </p>
                         </li>
@@ -86,7 +89,7 @@ export const PokemonPage = () => {
                   onClick={() => navigate(`/table/`)}
                   className={styles.btn}
                 >
-                  <ReturnIcon className={styles.arrow} /> Назад
+                  <ReturnIcon className={styles.arrow} /> {t("Back")}
                 </button>
               </section>
               <section className={styles.sprites}>

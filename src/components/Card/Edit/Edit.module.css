@@ -1,0 +1,41 @@
+.root {
+  position: absolute;
+  /* left: 20%; */
+  background-color: rgba(255, 255, 255, 0.98);
+  border-radius: 10px;
+  padding: 37px 56px;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader {
+  margin: 0 auto;
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.btn {
+  color: var(--light-color);
+  background-color: var(--main-color);
+  border-radius: 20px;
+
+  font-weight: 600;
+  font-size: 18px;
+
+  text-decoration: none;
+}
+
+.back {
+  padding: 15px 50px;
+}
+
+.save {
+  padding: 15px 250px;
+}

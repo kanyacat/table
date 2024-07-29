@@ -4,6 +4,7 @@ import { PokemonList } from "./features/pokedex/PokemonList/PokemonList.tsx";
 import { PokecenterPage } from "./features/pokecenter/PokecenterPage/PokecenterPage.tsx";
 import { PokemonPage } from "./features/pokemon/PokemonPage/PokemonPage.tsx";
 import { CreatePokemonPage } from "./features/pokecenter/createPokemon/CreatePokemonPage/CreatePokemonPage.tsx";
+import { I18nextProvider, useTranslation } from "react-i18next";
 
 const router = createBrowserRouter([
   {
@@ -25,9 +26,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { i18n } = useTranslation();
+
   return (
     <>
-      <RouterProvider router={router} />
+      <I18nextProvider i18n={i18n}>
+        <RouterProvider router={router} />
+      </I18nextProvider>
     </>
   );
 }

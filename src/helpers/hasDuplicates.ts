@@ -1,3 +1,7 @@
-export function hasDuplicates<T>(array: T[]) {
-  return new Set(array).size !== array.length;
+interface IArrWithName {
+  name: string;
+}
+
+export function hasDuplicates<T extends IArrWithName>(array: T[]) {
+  return new Set(array.map((arr: T) => arr.name)).size !== array.length;
 }

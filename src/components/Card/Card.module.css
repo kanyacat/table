@@ -7,6 +7,28 @@
   cursor: pointer;
 }
 
+.delete {
+  position: absolute;
+  right: 25px;
+
+  display: none;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit {
+  height: 0;
+}
+
+.name {
+  margin-left: 30px;
+  margin-right: 10px;
+}
+
 .img {
   width: 220px;
   height: 220px;
@@ -45,6 +67,9 @@
   margin-bottom: 3px;
 }
 
-.root:hover .description {
+.root:hover .description,
+.root:hover .edit,
+.root:hover .delete {
   display: block;
+  height: auto;
 }

@@ -1,5 +1,5 @@
 function createUniqueId() {
-  let uniqueId = 2;
+  let uniqueId = 4;
   return () => uniqueId++;
 }
 

@@ -1,30 +1,30 @@
 import { ICustomPokemon, IError, IOptions } from "../types/types";
 import { hasDuplicates } from "./hasDuplicates";
+import i18next from "i18next";
 
 export const onValidate = (
-  types: IOptions[] | undefined,
-  id: string | undefined,
+  types: IOptions[] | [],
+  id: string | undefined | null,
   name: string | undefined,
   isError: IError,
-  setIsError: React.Dispatch<React.SetStateAction<IError>>
+  setIsError: React.Dispatch<React.SetStateAction<IError>>,
+  prevName?: string | undefined
 ) => {
   validateType(types, isError, setIsError);
-  validateId(id, isError, setIsError);
-  validateName(name, isError, setIsError);
+  id !== null && validateId(id, isError, setIsError);
+  validateName(name, isError, setIsError, prevName);
 };
 
 export const validateType = (
-  types: IOptions[] | undefined,
+  types: IOptions[] | [],
   isError: IError,
   setIsError: React.Dispatch<React.SetStateAction<IError>>
 ) => {
-  console.log(types);
-
   if (types?.length == 0) {
     setIsError({
       id: isError.id,
       name: isError.name,
-      type: (isError.type = "Выберите тип"),
+      type: (isError.type = i18next.t("Select the type")),
       file: isError.file,
     });
     return;
@@ -34,7 +34,9 @@ export const validateType = (
     setIsError({
       id: isError.id,
       name: isError.name,
-      type: (isError.type = "Выбранные типы не должны повторяться"),
+      type: (isError.type = i18next.t(
+        "The selected types should not be repeated"
+      )),
       file: isError.file,
     });
     return;
@@ -57,7 +59,7 @@ export const validateId = (
 
   if (!id) {
     setIsError({
-      id: (isError.id = "Введите ID"),
+      id: (isError.id = i18next.t("Enter the ID")),
       name: isError.name,
       type: isError.type,
       file: isError.file,
@@ -67,7 +69,7 @@ export const validateId = (
 
   if (/^([0-9]{9})?$/.test(id) === false) {
     setIsError({
-      id: (isError.id = "ID должен содержать 9 символов"),
+      id: (isError.id = i18next.t("The ID must contain 9 characters")),
       name: isError.name,
       type: isError.type,
       file: isError.file,
@@ -77,7 +79,7 @@ export const validateId = (
 
   if (data?.some((d: ICustomPokemon) => d.id === id)) {
     setIsError({
-      id: (isError.id = "ID должен быть уникальным"),
+      id: (isError.id = i18next.t("The ID must be unique")),
       name: isError.name,
       type: isError.type,
       file: isError.file,
@@ -96,14 +98,15 @@ export const validateId = (
 export const validateName = (
   name: string | undefined,
   isError: IError,
-  setIsError: React.Dispatch<React.SetStateAction<IError>>
+  setIsError: React.Dispatch<React.SetStateAction<IError>>,
+  prevName?: string | undefined
 ) => {
   const data: [] = JSON.parse(localStorage.getItem("pokemons") || "[]");
 
   if (!name) {
     setIsError({
       id: isError.id,
-      name: (isError.name = "Введите имя покемона"),
+      name: (isError.name = i18next.t("Enter the name of the Pokemon")),
       type: isError.type,
       file: isError.file,
     });
@@ -113,7 +116,9 @@ export const validateName = (
   if (/^[a-zA-Z ]+$/.test(name) === false) {
     setIsError({
       id: isError.id,
-      name: (isError.name = "Имя должно состоять только из латинских букв"),
+      name: (isError.name = i18next.t(
+        "The name should consist only of Latin letters"
+      )),
       type: isError.type,
       file: isError.file,
     });
@@ -123,17 +128,19 @@ export const validateName = (
   if (name[0] !== name[0].toUpperCase()) {
     setIsError({
       id: isError.id,
-      name: (isError.name = "Имя должно начинаться с заглавной буквы"),
+      name: (isError.name = i18next.t(
+        "The name must begin with a capital letter"
+      )),
       type: isError.type,
       file: isError.file,
     });
     return;
   }
 
-  if (data?.some((d: ICustomPokemon) => d.name === name)) {
+  if (data?.some((d: ICustomPokemon) => d.name === name) && name !== prevName) {
     setIsError({
       id: isError.id,
-      name: (isError.name = "Имя должно быть уникальным"),
+      name: (isError.name = i18next.t("The name must be unique")),
       type: isError.type,
       file: isError.file,
     });
@@ -161,7 +168,7 @@ export const validateFile = (
       id: isError.id,
       name: isError.name,
       type: isError.type,
-      file: (isError.file = "Файл не является картинкой"),
+      file: (isError.file = i18next.t("The file is not a picture")),
     });
     return;
   }
@@ -171,7 +178,7 @@ export const validateFile = (
       id: isError.id,
       name: isError.name,
       type: isError.type,
-      file: (isError.file = "Размер файла превышает 2 MB"),
+      file: (isError.file = i18next.t("The file size exceeds 2 MB")),
     });
     return;
   }

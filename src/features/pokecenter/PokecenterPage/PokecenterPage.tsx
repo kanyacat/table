@@ -5,9 +5,17 @@ import { ICustomPokemon } from "../../../types/types";
 import { Header } from "../../../components/Header/Header";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const PokecenterPage = () => {
-  const pokemons = JSON.parse(localStorage.getItem("pokemons") || "[]");
+  const { t } = useTranslation();
+
+  const [pokemons, setPokemons] = useState<ICustomPokemon[]>([]);
+
+  useEffect(() => {
+    setPokemons(JSON.parse(localStorage.getItem("pokemons") || "[]"));
+  }, []);
 
   return (
     <>
@@ -25,6 +33,7 @@ export const PokecenterPage = () => {
                   types={pokemon.types}
                   description={pokemon.description}
                   picture={pokemon.picture}
+                  setPokemons={setPokemons}
                 />
               );
             })
@@ -36,7 +45,7 @@ export const PokecenterPage = () => {
                 src={not__pokemon}
                 alt="not pokemon picture"
               />
-              <p>No Pokemon have been received yet</p>
+              <p>{t("No Pokemon have been received yet")}</p>
             </div>
           )}
         </article>
