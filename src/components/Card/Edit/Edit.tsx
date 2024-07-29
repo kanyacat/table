@@ -59,38 +59,37 @@ export const Edit = (props: IEditProps) => {
     }
   };
 
-  return (
-    <div className={styles.root}>
-      {isLoading ? (
+  if (isLoading) {
+    return (
+      <div className={styles.root}>
         <div className={styles.loader}>
           <Loader />
         </div>
-      ) : (
-        <>
-          <PokemonForm
-            formData={editData}
-            setFormData={setEditData}
-            isError={isError}
-            setIsError={(prev) => setIsError(prev)}
-            isEdit={true}
-            prevName={name}
-          />
-          <div className={styles.btns}>
-            <button
-              className={clsx(styles.back, styles.btn)}
-              onClick={setEditIsOpen}
-            >
-              {t("Back")}
-            </button>
-            <button
-              className={clsx(styles.save, styles.btn)}
-              onClick={onSubmit}
-            >
-              {t("Save")}
-            </button>
-          </div>
-        </>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.root}>
+      <PokemonForm
+        formData={editData}
+        setFormData={setEditData}
+        isError={isError}
+        setIsError={(prev) => setIsError(prev)}
+        isEdit={true}
+        prevName={name}
+      />
+      <div className={styles.btns}>
+        <button
+          className={clsx(styles.back, styles.btn)}
+          onClick={setEditIsOpen}
+        >
+          {t("Back")}
+        </button>
+        <button className={clsx(styles.save, styles.btn)} onClick={onSubmit}>
+          {t("Save")}
+        </button>
+      </div>
     </div>
   );
 };

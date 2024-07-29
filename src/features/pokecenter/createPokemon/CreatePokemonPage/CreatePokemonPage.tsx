@@ -77,21 +77,25 @@ export const CreatePokemonPage = () => {
     localStorage.setItem("img", "");
   };
 
-  return (
-    <section className={styles.root}>
-      {isLoading ? (
+  if (isLoading) {
+    return (
+      <section className={styles.root}>
         <div className={styles.loader}>
           <Loader />
         </div>
-      ) : (
-        <PokemonForm
-          formData={formData}
-          setFormData={(prev) => setFormData(prev)}
-          isError={isError}
-          setIsError={(prev) => setIsError(prev)}
-          isEdit={false}
-        />
-      )}
+      </section>
+    );
+  }
+
+  return (
+    <section className={styles.root}>
+      <PokemonForm
+        formData={formData}
+        setFormData={(prev) => setFormData(prev)}
+        isError={isError}
+        setIsError={(prev) => setIsError(prev)}
+        isEdit={false}
+      />
       <div className={styles.btns}>
         <Link to="/table/pokecenter" className={clsx(styles.close)}>
           {t("Back")}

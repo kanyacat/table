@@ -121,29 +121,27 @@ export const Table = () => {
     setPage(prev > 0 ? prev : current);
   }, [offset, page]);
 
+  if (loading) {
+    return (
+      <main className={styles.root}>
+        <Loader />
+      </main>
+    );
+  }
+
   return (
     <main className={styles.root}>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <SortableTable
-            rows={tableRows}
-            columns={columns}
-            header={headerConfig}
-          />
-          {tableRows && (
-            <Pagination
-              onNextPageClick={handleNextPageClick}
-              onPrevPageClick={handlePrevPageClick}
-              hasPage={{
-                hasPreviousPage: page === 1,
-                hasNextPage: page === getTotalPageCount(TOTAL_COUNT),
-              }}
-              nav={{ current: page, total: getTotalPageCount(TOTAL_COUNT) }}
-            />
-          )}
-        </>
+      <SortableTable rows={tableRows} columns={columns} header={headerConfig} />
+      {tableRows && (
+        <Pagination
+          onNextPageClick={handleNextPageClick}
+          onPrevPageClick={handlePrevPageClick}
+          hasPage={{
+            hasPreviousPage: page === 1,
+            hasNextPage: page === getTotalPageCount(TOTAL_COUNT),
+          }}
+          nav={{ current: page, total: getTotalPageCount(TOTAL_COUNT) }}
+        />
       )}
     </main>
   );
