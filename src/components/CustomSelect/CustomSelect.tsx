@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import styles from "./CustomSelect.module.css";
 import clsx from "clsx";
-import { IOptions } from "../../types/types";
+import { IFormData, IOptions } from "../../types/types";
 import { options } from "../../configs/optionsTypesConfig";
 import { useTranslation } from "react-i18next";
 
 interface IProps {
-  setTypes: Dispatch<SetStateAction<IOptions[]>>;
+  setFormData: Dispatch<SetStateAction<IFormData>>;
   error: string;
   types?: IOptions[];
   validate: () => void;
@@ -14,7 +14,7 @@ interface IProps {
 }
 
 export const CustomSelect = (props: IProps) => {
-  const { types, setTypes, error, validate } = props;
+  const { types, error, validate, setFormData } = props;
 
   const { t } = useTranslation();
 
@@ -33,7 +33,7 @@ export const CustomSelect = (props: IProps) => {
   document.addEventListener("mousedown", closeOpenOptions);
 
   const handleSelect = (option: IOptions) => {
-    setTypes((prev) => [...prev, option]);
+    setFormData((prev) => ({ ...prev, types: [...prev.types, option] }));
     setShowOptions(false);
   };
 

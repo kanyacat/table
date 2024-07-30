@@ -72,6 +72,14 @@ export interface IError {
   file: string;
 }
 
+export interface IFormData {
+  types: IOptions[];
+  id: string;
+  name: string;
+  description: string;
+  file: string;
+}
+
 export interface IGetPokemonResponseBody {
   id: string;
   name: string;

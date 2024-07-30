@@ -75,7 +75,7 @@ export const Card = (props: ICardProps) => {
             name={name}
             types={types}
             description={description}
-            picture={picture}
+            file={picture}
             setEditIsOpen={() => setEditIsOpen(false)}
             setPokemons={setPokemons}
           />,
