@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { IPokemonData } from "../../../../types/pokemonTypes";
 import "../../../../PokemonTypes.css";
-import { Property, IGetPokemonResponse } from "../../../../types/types";
+import {
+  Property,
+  IGetPokemonResponse,
+  ICustomPokemon,
+} from "../../../../types/types";
 import { requestPokemonData } from "../../../../api/api";
 import { sort } from "../../../../helpers/sort";
 import { Loader } from "../../../../components/Loader/Loader";
@@ -10,7 +14,7 @@ import { Pagination } from "../../../../components/Pagination/Pagination";
 import { PokemonType } from "../../../../components/PokemonType/PokemonType";
 import { columns } from "../../../../configs/tableColumnConfig";
 import styles from "./PokedexTable.module.css";
-import { LIMIT, ROWS_PER_PAGE, TOTAL_COUNT } from "../../../../consts";
+import { ROWS_PER_PAGE, TOTAL_COUNT } from "../../../../consts";
 import { useTranslation } from "react-i18next";
 
 const getTotalPageCount = (rowCount: number): number =>
@@ -35,8 +39,36 @@ export const Table = () => {
   useEffect(() => {
     function fetchData() {
       setLoading(true);
+      let limit = 10;
 
-      requestPokemonData(offset, LIMIT)
+      const userData = JSON.parse(localStorage.getItem("pokemons") || "");
+
+      const userArray: [] = userData.map((data: ICustomPokemon) => {
+        return {
+          id: data.id,
+          name: data.name,
+          types: data.types?.map((type) => (
+            <PokemonType key={type.name} type={type.name.toLocaleLowerCase()} />
+          )),
+          weight: 100,
+          height: 100,
+        };
+      });
+
+      //всегда начинаем с 0
+      if (page === 1 || (page == 2 && userArray.length >= 10)) {
+        setOffset(0);
+      }
+
+      if (userArray.length > 0 && page == 1) {
+        limit = 10 - userArray.length;
+      }
+
+      if (userArray.length < 10 && page == 2) {
+        setOffset(10 - userArray.length);
+      }
+
+      requestPokemonData(offset, limit)
         .then((response?: IGetPokemonResponse[]) => {
           if (response) {
             const array = response.map((_, i) => ({
@@ -49,15 +81,17 @@ export const Table = () => {
               height: response[i].body.height,
             }));
 
-            setTableRows(array);
+            if (page === 1) {
+              setTableRows([...userArray, ...array]);
+            } else {
+              setTableRows(array);
+            }
           }
         })
-
         .catch((error) => {
           setLoading(false);
           console.error(error);
         })
-
         .finally(() => {
           setLoading(false);
         });
