@@ -79,7 +79,14 @@ export const SortableTable: FC<ISortableTableProps> = ({
       </thead>
       <tbody>
         {table.map((row: any) => (
-          <tr key={row.id} onClick={() => navigate(`/table/pokemon/${row.id}`)}>
+          <tr
+            key={row.id}
+            onClick={
+              row.id.length === 9
+                ? () => {}
+                : () => navigate(`/table/pokemon/${row.id}`)
+            }
+          >
             <td
               className={styles.grab}
               draggable={true}
